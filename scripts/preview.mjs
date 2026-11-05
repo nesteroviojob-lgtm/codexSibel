@@ -1,9 +1,11 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import { createSibelRuntime, root } from './runtime.mjs';
 
 const port = Number(process.env.PORT || 9400);
+if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Некорректный номер порта.');
 const siteUrl = `http://127.0.0.1:${port}`;
 const runtime = await createSibelRuntime({ siteUrl });
 let phpQueue = Promise.resolve();
@@ -73,11 +75,37 @@ const server = http.createServer(async (req, res) => {
         res.end('Ошибка локального сервера. Подробности в терминале.');
     }
 });
+server.on('error', async (error) => {
+    console.error(
+        error.code === 'EADDRINUSE'
+            ? `Порт ${port} уже занят. Закройте предыдущее окно запуска сайта и повторите.`
+            : `Ошибка локального сервера: ${error.message}`,
+    );
+    await runtime.close();
+    process.exitCode = 1;
+});
 server.listen(port, '127.0.0.1', () => {
     console.log(`Local: ${siteUrl}`);
     console.log(`Admin: ${siteUrl}/wp-admin/admin.php?page=sibel`);
     console.log(`Development login details: ${runtime.credentialsFile}`);
     console.log('This loopback-only preview is for development. Upload only the theme ZIP to your hosting.');
+    if (process.env.SIBEL_OPEN_BROWSER === '1') {
+        console.log('\nСайт готов. Для входа в админку:\n');
+        console.log(`Логин: ${runtime.credentials.username}`);
+        console.log(`Пароль: ${runtime.credentials.password}`);
+        console.log('\nНе закрывайте это окно, пока смотрите сайт. Для остановки нажмите Ctrl+C.\n');
+        if (process.platform === 'win32') {
+            for (const url of [siteUrl, `${siteUrl}/wp-admin/admin.php?page=sibel`]) {
+                const child = spawn('cmd.exe', ['/d', '/c', 'start', '', url], {
+                    detached: true,
+                    stdio: 'ignore',
+                    windowsHide: true,
+                });
+                child.on('error', () => console.log(`Откройте в браузере: ${url}`));
+                child.unref();
+            }
+        }
+    }
 });
 for (const signal of ['SIGINT', 'SIGTERM'])
     process.on(signal, () =>

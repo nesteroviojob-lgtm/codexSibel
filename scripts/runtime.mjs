@@ -1,23 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { loadNodeRuntime, createNodeFsMountHandler } from '@php-wasm/node';
 import { bootWordPressAndRequestHandler } from '@wp-playground/wordpress';
+import { prepareWordPressRuntime } from './prepare-runtime.mjs';
 
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export async function createSibelRuntime({
     siteUrl = 'http://127.0.0.1:9400',
     stateDir = '.runtime/site',
 } = {}) {
-    const zip = path.join(root, '.runtime/wordpress.zip');
-    if (!fs.existsSync(zip)) {
-        const prepared = spawnSync('python', [path.join(root, 'scripts/prepare-runtime.py')], {
-            stdio: 'inherit',
-        });
-        if (prepared.status) throw new Error('Could not prepare the local WordPress runtime.');
-    }
+    const zip = await prepareWordPressRuntime();
     const state = path.resolve(root, stateDir);
     fs.mkdirSync(state, { recursive: true });
     let pid = 1;
