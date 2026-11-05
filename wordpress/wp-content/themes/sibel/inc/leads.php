@@ -7,7 +7,7 @@ function sibel_submit_lead(): void
         wp_send_json_error(['message' => 'Обновите страницу и попробуйте ещё раз.'], 403);
     }
     $success = ['message' => 'Спасибо! Заявка принята. Наш специалист свяжется с вами.'];
-    $fields = ['name', 'phone', 'email', 'website', 'product', 'consent'];
+    $fields = ['name', 'company', 'phone', 'email', 'website', 'product', 'consent'];
     foreach ($fields as $field) {
         if (isset($_POST[$field]) && !is_string($_POST[$field])) {
             wp_send_json_error(['message' => 'Проверьте заполненные поля.'], 400);
@@ -17,6 +17,7 @@ function sibel_submit_lead(): void
         wp_send_json_success($success);
     }
     $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
+    $company = sanitize_text_field(wp_unslash($_POST['company'] ?? ''));
     $phone = sanitize_text_field(wp_unslash($_POST['phone'] ?? ''));
     $email_raw = trim(wp_unslash($_POST['email'] ?? ''));
     $product = sanitize_text_field(wp_unslash($_POST['product'] ?? ''));
@@ -24,6 +25,7 @@ function sibel_submit_lead(): void
     if (
         !$name ||
         mb_strlen($name) > 100 ||
+        mb_strlen($company) > 150 ||
         strlen($digits) < 7 ||
         strlen($digits) > 15 ||
         mb_strlen($product) > 300 ||
@@ -60,6 +62,7 @@ function sibel_submit_lead(): void
     foreach (
         [
             'name' => $name,
+            'company' => $company,
             'phone' => $phone,
             'email' => sanitize_email($email_raw),
             'product' => $product,
@@ -76,7 +79,7 @@ function sibel_submit_lead(): void
         $sent = wp_mail(
             $recipient,
             'Новая заявка с сайта СИБЭЛ',
-            "Имя: $name\nТелефон: $phone\nE-mail: $email_raw\nТовар: $product\n\n" .
+            "Имя: $name\nКомпания: $company\nТелефон: $phone\nE-mail: $email_raw\nТовар: $product\n\n" .
                 admin_url('post.php?post=' . $id . '&action=edit'),
         );
         update_post_meta($id, '_sibel_email_sent', $sent ? '1' : '0');
@@ -96,6 +99,7 @@ function sibel_lead_meta_box(WP_Post $post): void
     foreach (
         [
             'name' => 'Имя',
+            'company' => 'Компания',
             'phone' => 'Телефон',
             'email' => 'Почта',
             'product' => 'Товар',
@@ -150,6 +154,7 @@ add_filter(
         'cb' => $columns['cb'],
         'title' => 'Заявка',
         'sibel_phone' => 'Телефон',
+        'sibel_company' => 'Компания',
         'sibel_email' => 'Почта',
         'sibel_status' => 'Статус',
         'date' => 'Дата',
@@ -167,7 +172,7 @@ add_action(
                     get_post_meta($id, '_sibel_status', true)
                 ] ?? 'Новая',
             );
-        } elseif (in_array($column, ['sibel_phone', 'sibel_email'], true)) {
+        } elseif (in_array($column, ['sibel_phone', 'sibel_company', 'sibel_email'], true)) {
             echo esc_html(get_post_meta($id, '_' . $column, true));
         }
     },

@@ -27,9 +27,11 @@ $gallery = $gallery_ids
 foreach ($gallery as $url):
     if (!$url) {
         continue;
-    } ?><button data-gallery-select="<?php echo esc_url(
-    $url,
-); ?>" aria-label="Показать фотографию проекта"><img src="<?php echo esc_url(
+    } ?><button<?php if (!$gallery_ids): ?> data-figma-asset="<?php echo esc_attr(
+     basename($url),
+ ); ?>"<?php endif; ?> data-gallery-select="<?php echo esc_url(
+     $url,
+ ); ?>" aria-label="Показать фотографию проекта"><img src="<?php echo esc_url(
     $url,
 ); ?>" alt="Фотография проекта" loading="lazy"></button><?php
 endforeach;

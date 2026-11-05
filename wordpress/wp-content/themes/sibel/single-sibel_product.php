@@ -10,9 +10,12 @@ $doc = get_post_meta($pid, '_sibel_document', true);
 ?>
 <main id="main" class="container inner-main product-main">
     <?php sibel_breadcrumbs([['Продукция', sibel_page_url('products')], get_the_title()]); ?>
-    <div class="product-detail"><div class="product-detail__image"><?php sibel_image(
-        $pid,
-    ); ?></div><div class="product-detail__content"><div><h1><?php the_title(); ?></h1><div class="product-description"><?php the_content(); ?></div><?php if (
+    <div class="product-detail"><div class="product-detail__image"<?php echo !has_post_thumbnail($pid) &&
+    get_post_meta($pid, '_sibel_asset', true) === '40e79.png'
+        ? ' data-figma-asset="40e79.png"'
+        : ''; ?>><div class="product-detail__image-crop"><?php sibel_image(
+    $pid,
+); ?></div></div><div class="product-detail__content"><div><h1><?php the_title(); ?></h1><div class="product-description"><?php the_content(); ?></div><?php if (
     $features
 ): ?><h2>Основные характеристики</h2><ul class="features-list"><?php foreach (
     $features
@@ -49,11 +52,16 @@ $doc = get_post_meta($pid, '_sibel_document', true);
     foreach ($gallery as $i => $url):
         if (!$url) {
             continue;
-        } ?><button class="gallery-tile" data-lightbox="<?php echo esc_url(
-    $url,
-); ?>" data-caption="<?php echo esc_attr(
+        } ?><button class="gallery-tile"<?php if (!$gallery_ids): ?> data-figma-asset="<?php echo esc_attr(
+     $gallery_assets[$i],
+ ); ?>"<?php endif; ?> data-lightbox="<?php echo esc_url($url); ?>" data-caption="<?php echo esc_attr(
     $gallery_labels[$i] ?? get_the_title(),
-); ?>"><img src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr(
+); ?>"><?php if (
+    !$gallery_ids &&
+    $gallery_assets[$i] === '47daa.png'
+): ?><img class="gallery-tile__underlay" src="<?php echo esc_url(
+    sibel_asset('da5a3.png'),
+); ?>" alt="" loading="lazy"><?php endif; ?><img src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr(
     $gallery_labels[$i] ?? get_the_title(),
 ); ?>" loading="lazy"><span><?php echo esc_html(
     $gallery_labels[$i] ?? get_the_title(),

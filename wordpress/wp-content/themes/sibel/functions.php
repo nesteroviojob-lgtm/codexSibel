@@ -74,11 +74,13 @@ function sibel_icon(string $name, string $class = ''): void
         'download' => '26aca.svg',
     ];
     if (isset($icons[$name])) {
-        echo '<img class="icon ' .
+        echo '<span class="icon icon--' .
+            esc_attr($name) .
+            ' ' .
             esc_attr($class) .
-            '" src="' .
+            '" aria-hidden="true"><img src="' .
             esc_url(sibel_asset($icons[$name])) .
-            '" alt="" aria-hidden="true">';
+            '" alt=""></span>';
     }
 }
 
@@ -140,8 +142,8 @@ function sibel_contact_form(string $id = 'contact'): void
     <form class="lead-form" data-lead-form>
         <div class="lead-form__fields">
             <label>Имя<input name="name" autocomplete="name" placeholder="Ваше имя" required maxlength="100"></label>
-            <label>Телефон<input type="tel" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required maxlength="30"></label>
-            <label>Электронная почта<input type="email" name="email" autocomplete="email" placeholder="name@example.ru" maxlength="150"></label>
+            <label>Название компании<input name="company" autocomplete="organization" placeholder="Ваша компания" maxlength="150"></label>
+            <label>Номер телефона<input type="tel" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required maxlength="30"></label>
             <button class="button" type="submit">Оставить запрос</button>
         </div>
         <label class="consent"><input type="checkbox" name="consent" required><span>Согласен на обработку персональных данных в соответствии с <a href="<?php echo esc_url(
