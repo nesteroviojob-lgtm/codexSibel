@@ -13,7 +13,7 @@ $products = sibel_items('sibel_product');
             ); ?>" alt=""><img class="hero__bolt hero__bolt--bottom" src="<?php echo esc_url(
     sibel_asset('80361.svg'),
 ); ?>" alt=""><img class="hero__equipment" src="<?php echo esc_url(
-    sibel_media_url(sibel_setting('hero_image')),
+    sibel_media_url(sibel_setting('hero_image') ?: sibel_defaults()['hero_image']),
 ); ?>" alt="Электрощитовое оборудование СИБЭЛ" fetchpriority="high"><div class="hero__badge">Контроль качества<br>на каждом этапе<br>производства</div></div>
             <div class="hero__copy"><img class="hero__title-glow" src="<?php echo esc_url(
                 sibel_asset('b81b6.svg'),

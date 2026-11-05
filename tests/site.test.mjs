@@ -46,8 +46,37 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                 assert.match(r.text, /<main[^>]*id="main"/);
                 assert.doesNotMatch(r.text, /https:\/\/www\.figma\.com\/api\/mcp\/asset/);
                 assert.doesNotMatch(r.text, /Fatal error|Warning:|critical error/);
+                if (url === '/projects/rosneft/') {
+                    assert.match(r.text, /data-figma-asset="3924f\.png"/);
+                }
             }
         });
+        await t.test(
+            'home image follows admin selection and falls back to the original when cleared',
+            async () => {
+                const settings = await run("echo json_encode(get_option('sibel_settings')); ");
+                try {
+                    await run(
+                        "$s = get_option('sibel_settings'); $s['hero_image'] = 'https://example.org/equipment.png'; update_option('sibel_settings', $s);",
+                    );
+                    assert.match(
+                        (await request('/')).text,
+                        /class="hero__equipment" src="https:\/\/example\.org\/equipment\.png"/,
+                    );
+                    await run(
+                        "$s = get_option('sibel_settings'); $s['hero_image'] = ''; update_option('sibel_settings', $s);",
+                    );
+                    assert.match(
+                        (await request('/')).text,
+                        /class="hero__equipment" src="[^"]*\/assets\/images\/d9626\.png\?ver=\d+"/,
+                    );
+                } finally {
+                    await run(
+                        `update_option('sibel_settings', json_decode(${JSON.stringify(settings)}, true));`,
+                    );
+                }
+            },
+        );
         await t.test('admin rejects anonymous access and accepts a valid WordPress login', async () => {
             const denied = await request('/wp-admin/admin.php?page=sibel');
             assert.equal(denied.httpStatusCode, 302);

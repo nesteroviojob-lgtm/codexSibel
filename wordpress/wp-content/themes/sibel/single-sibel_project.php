@@ -28,7 +28,7 @@ foreach ($gallery as $url):
     if (!$url) {
         continue;
     } ?><button<?php if (!$gallery_ids): ?> data-figma-asset="<?php echo esc_attr(
-     basename($url),
+     basename((string) wp_parse_url($url, PHP_URL_PATH)),
  ); ?>"<?php endif; ?> data-gallery-select="<?php echo esc_url(
      $url,
  ); ?>" aria-label="Показать фотографию проекта"><img src="<?php echo esc_url(

@@ -30,7 +30,9 @@ add_action('wp_enqueue_scripts', function () {
 
 function sibel_asset(string $filename): string
 {
-    return get_template_directory_uri() . '/assets/images/' . $filename;
+    $url = get_template_directory_uri() . '/assets/images/' . $filename;
+    $file = get_template_directory() . '/assets/images/' . $filename;
+    return is_file($file) ? add_query_arg('ver', (string) filemtime($file), $url) : $url;
 }
 
 function sibel_setting(string $key, $fallback = null)

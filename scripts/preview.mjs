@@ -24,6 +24,7 @@ const types = {
     '.ttf': 'font/ttf',
 };
 const server = http.createServer(async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
     try {
         const pathname = decodeURIComponent(new URL(req.url, siteUrl).pathname);
         if (pathname.split('/').some((segment) => segment.startsWith('.'))) {
