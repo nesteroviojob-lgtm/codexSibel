@@ -129,6 +129,7 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                     action: 'sibel_lead',
                     nonce: config.nonce,
                     name: 'Проверка формы',
+                    company: '<b>Компания клиента</b>',
                     phone: '+7 999 123-45-67',
                     email: 'client@example.org',
                     consent: 'on',
@@ -141,6 +142,16 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                 assert.equal(noConsent.httpStatusCode, 422);
                 const badEmail = await post('/wp-admin/admin-ajax.php', { ...valid, email: 'not-an-email' });
                 assert.equal(badEmail.httpStatusCode, 422);
+                const longCompany = await post('/wp-admin/admin-ajax.php', {
+                    ...valid,
+                    company: 'Я'.repeat(151),
+                });
+                assert.equal(longCompany.httpStatusCode, 422);
+                const arrayCompany = await post('/wp-admin/admin-ajax.php', {
+                    ...valid,
+                    'company[]': 'Некорректное поле',
+                });
+                assert.equal(arrayCompany.httpStatusCode, 400);
                 await post('/wp-admin/admin-ajax.php', { ...valid, website: 'spam.example.org' });
                 assert.equal(Number(await run("echo (int)wp_count_posts('sibel_lead')->private;")), initial);
                 for (let i = 0; i < 5; i++) {
@@ -164,6 +175,15 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                 );
                 const publicRequest = await request('/?post_type=sibel_lead&p=' + privateId);
                 assert.ok(!publicRequest.text.includes('client@example.org'));
+                assert.ok(!publicRequest.text.includes('Компания клиента'));
+                assert.equal(
+                    await run(`echo get_post_meta(${Number(privateId)}, '_sibel_company', true);`),
+                    'Компания клиента',
+                );
+                const leadEditor = await run(
+                    `wp_set_current_user(1); ob_start(); sibel_lead_meta_box(get_post(${Number(privateId)})); echo ob_get_clean();`,
+                );
+                assert.match(leadEditor, /Компания клиента/);
             },
         );
     } finally {

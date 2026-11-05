@@ -112,11 +112,11 @@ if (
     sibel_page_url('certificates'),
 ); ?>" aria-label="Посмотреть сертификаты"><img class="certificate-art__glow" src="<?php echo esc_url(
     sibel_asset('cd902.svg'),
-); ?>" alt=""><img class="certificate-art__back-left" src="<?php echo esc_url(
+); ?>" alt=""><span class="certificate-art__back-left"><img src="<?php echo esc_url(
     sibel_asset('5ad52.png'),
-); ?>" alt="" loading="lazy"><img class="certificate-art__back-right" src="<?php echo esc_url(
+); ?>" alt="" loading="lazy"></span><span class="certificate-art__back-right"><span><img src="<?php echo esc_url(
     sibel_asset('29611.png'),
-); ?>" alt="" loading="lazy"><img class="certificate-art__front" src="<?php echo esc_url(
+); ?>" alt="" loading="lazy"></span></span><img class="certificate-art__front" src="<?php echo esc_url(
     sibel_asset('ab02a.png'),
 ); ?>" alt="Сертификат соответствия" loading="lazy"></a></section>
         <?php endif; ?>
