@@ -542,12 +542,12 @@ button {
 }
 .about-photo img {
     position: absolute;
-    width: 176.24%;
+    width: 100%;
     max-width: none;
-    height: 103.85%;
-    left: -11.64%;
-    top: -1.89%;
-    object-fit: fill;
+    height: 100%;
+    left: 0;
+    top: 0;
+    object-fit: cover;
 }
 .about-content {
     display: flex;

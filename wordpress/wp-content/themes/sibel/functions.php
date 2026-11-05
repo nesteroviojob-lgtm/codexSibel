@@ -17,7 +17,12 @@ add_action('after_setup_theme', function () {
 
 add_action('wp_enqueue_scripts', function () {
     $uri = get_template_directory_uri();
-    wp_enqueue_style('sibel', $uri . '/assets/css/site.css', [], '1.0.0');
+    wp_enqueue_style(
+        'sibel',
+        $uri . '/assets/css/site.css',
+        [],
+        (string) filemtime(__DIR__ . '/assets/css/site.css'),
+    );
     wp_enqueue_script('sibel', $uri . '/assets/js/site.js', [], '1.0.0', [
         'strategy' => 'defer',
         'in_footer' => true,

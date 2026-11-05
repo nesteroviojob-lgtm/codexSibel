@@ -75,7 +75,7 @@ $products = sibel_items('sibel_product');
         <section class="about" id="about" aria-labelledby="about-title"><h2 id="about-title"><?php echo esc_html(
             sibel_setting('about_title'),
         ); ?></h2><div class="about-grid"><div class="about-photo"><img src="<?php echo esc_url(
-    sibel_media_url(sibel_setting('company_image')),
+    sibel_media_url(sibel_setting('company_image') ?: sibel_defaults()['company_image']),
 ); ?>" alt="Производство электрощитового оборудования" loading="lazy"></div><div class="about-content"><div class="about-text"><h3><?php
 $title = sibel_setting('company_title');
 if (

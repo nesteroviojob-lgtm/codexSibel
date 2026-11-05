@@ -52,24 +52,33 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
             }
         });
         await t.test(
-            'home image follows admin selection and falls back to the original when cleared',
+            'site images follow admin selections and fall back to provided photos when cleared',
             async () => {
                 const settings = await run("echo json_encode(get_option('sibel_settings')); ");
                 try {
                     await run(
-                        "$s = get_option('sibel_settings'); $s['hero_image'] = 'https://example.org/equipment.png'; update_option('sibel_settings', $s);",
+                        "$s = get_option('sibel_settings'); $s['hero_image'] = 'https://example.org/equipment.png'; $s['company_image'] = 'https://example.org/production.png'; update_option('sibel_settings', $s);",
                     );
+                    const selected = (await request('/')).text;
                     assert.match(
-                        (await request('/')).text,
+                        selected,
                         /class="hero__equipment" src="https:\/\/example\.org\/equipment\.png"/,
                     );
-                    await run(
-                        "$s = get_option('sibel_settings'); $s['hero_image'] = ''; update_option('sibel_settings', $s);",
-                    );
+                    assert.match(selected, /src="https:\/\/example\.org\/production\.png"/);
                     assert.match(
-                        (await request('/')).text,
+                        (await request('/about/')).text,
+                        /src="https:\/\/example\.org\/production\.png"/,
+                    );
+                    await run(
+                        "$s = get_option('sibel_settings'); $s['hero_image'] = ''; $s['company_image'] = ''; update_option('sibel_settings', $s);",
+                    );
+                    const cleared = (await request('/')).text;
+                    assert.match(
+                        cleared,
                         /class="hero__equipment" src="[^"]*\/assets\/images\/d9626\.png\?ver=\d+"/,
                     );
+                    assert.match(cleared, /\/assets\/images\/5c50a\.png\?ver=\d+/);
+                    assert.match((await request('/about/')).text, /\/assets\/images\/5c50a\.png\?ver=\d+/);
                 } finally {
                     await run(
                         `update_option('sibel_settings', json_decode(${JSON.stringify(settings)}, true));`,

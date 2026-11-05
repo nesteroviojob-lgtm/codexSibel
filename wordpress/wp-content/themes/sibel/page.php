@@ -84,7 +84,7 @@ get_post_meta($p->ID, '_sibel_asset', true) === '4e1fb.png'
 ); ?>"><?php echo esc_html(sibel_setting('email')); ?></a></p></div></div></div></div>
     <?php elseif ($slug === 'about'): ?>
         <div class="about-grid"><div class="about-photo"><img src="<?php echo esc_url(
-            sibel_media_url(sibel_setting('company_image')),
+            sibel_media_url(sibel_setting('company_image') ?: sibel_defaults()['company_image']),
         ); ?>" alt="Производство СИБЭЛ"></div><div class="prose"><h2><?php echo esc_html(
     sibel_setting('company_title'),
 ); ?></h2><p><?php echo esc_html(
