@@ -5,7 +5,7 @@
   "description": "Корпоративный сайт СИБЭЛ — WordPress, точная вёрстка по Figma и управление каталогом",
   "scripts": {
     "dev": "node --use-env-proxy scripts/preview.mjs",
-    "assets": "python scripts/download-assets.py",
+    "assets": "node --use-env-proxy scripts/download-assets.mjs",
     "check": "node scripts/check.mjs",
     "package": "python scripts/package.py",
     "test": "node --use-env-proxy --test tests/*.test.mjs",

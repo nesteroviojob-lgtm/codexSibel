@@ -8,3 +8,5 @@ artifacts/
 *.log
 __pycache__/
 *.pyc
+SIBEL-FIGMA*.zip
+wordpress/wp-content/themes/sibel/assets/images/*.part
