@@ -53,8 +53,8 @@ $is_home = is_front_page();
             <?php
             endif; ?>
         </nav>
-        <div class="header-contacts"><a href="tel:<?php echo esc_attr(
-            preg_replace('/[^+0-9]/', '', sibel_setting('phone')),
+        <div class="header-contacts"><a href="<?php echo esc_url(
+            sibel_phone_href(sibel_setting('phone')),
         ); ?>"><?php echo esc_html(sibel_setting('phone')); ?></a><a href="mailto:<?php echo esc_attr(
     sibel_setting('email'),
 ); ?>"><?php echo esc_html(sibel_setting('email')); ?></a></div>

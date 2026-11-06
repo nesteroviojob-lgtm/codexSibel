@@ -8,13 +8,17 @@
 ); ?>" alt="СИБЭЛ" width="220" height="49"></a><p><?php echo nl2br(
     esc_html(sibel_setting('address')),
 ); ?></p></div>
-        <div class="footer-contact"><a href="tel:<?php echo esc_attr(
-            preg_replace('/[^+0-9]/', '', sibel_setting('phone')),
-        ); ?>"><?php sibel_icon('phone'); ?><span><?php echo esc_html(
-    sibel_setting('phone'),
-); ?><br><?php echo esc_html(sibel_setting('phone_second')); ?></span></a><a href="mailto:<?php echo esc_attr(
-    sibel_setting('email'),
-); ?>"><?php sibel_icon('mail'); ?><span><?php echo esc_html(
+        <div class="footer-contact"><div class="footer-phones"><?php sibel_icon(
+            'phone',
+        ); ?><span><a href="<?php echo esc_url(
+    sibel_phone_href(sibel_setting('phone')),
+); ?>"><?php echo esc_html(sibel_setting('phone')); ?></a><a href="<?php echo esc_url(
+    sibel_phone_href(sibel_setting('phone_second')),
+); ?>"><?php echo esc_html(
+    sibel_setting('phone_second'),
+); ?></a></span></div><a href="mailto:<?php echo esc_attr(sibel_setting('email')); ?>"><?php sibel_icon(
+    'mail',
+); ?><span><?php echo esc_html(
     sibel_setting('email'),
 ); ?></span></a><button class="button" data-open-lead>Оставить заявку</button></div>
         <div class="footer-column"><h2><a href="<?php echo esc_url(
@@ -47,9 +51,9 @@ endforeach; ?></div>
         wp_date('Y'),
     ); ?> Сибэл. Все права защищены.</span><div><a href="<?php echo esc_url(
      sibel_page_url('privacy'),
- ); ?>">Политика конфиденциальности</a><a href="<?php echo esc_url(
-    sibel_page_url('terms'),
-); ?>">Пользовательское соглашение</a></div></div></div>
+ ); ?>">Политика обработки персональных данных</a><a href="<?php echo esc_url(
+    sibel_page_url('consent'),
+); ?>">Согласие на обработку персональных данных</a></div></div></div>
 </footer>
 <dialog class="site-dialog" id="lead-dialog" aria-labelledby="lead-title"><button class="dialog-close" aria-label="Закрыть" data-close-dialog>×</button><h2 id="lead-title">Связаться по проекту</h2><p>Оставьте контакт — мы перезвоним и ответим на ваши вопросы</p><?php sibel_contact_form(
     'modal',

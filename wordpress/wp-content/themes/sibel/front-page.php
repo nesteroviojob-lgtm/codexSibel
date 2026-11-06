@@ -150,19 +150,23 @@ if (
 } ?></div></section>
         <?php endif; ?>
         <?php if (sibel_setting('show_map')): ?>
-        <section class="home-map" aria-label="Адрес и контакты"><a class="home-map__image" href="<?php echo esc_url(
-            sibel_setting('map_link'),
-        ); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url(
-    sibel_asset('ef7dc.png'),
-); ?>" alt="Карта: СИБЭЛ, Томск, Пролетарская, 62/2" loading="lazy"></a><div class="map-card"><h2><?php echo esc_html(
+        <section class="home-map" aria-label="Адрес и контакты"><div class="home-map__image"><?php sibel_yandex_map(); ?></div><div class="map-card"><h2><?php echo esc_html(
     sibel_setting('map_title'),
 ); ?></h2><p><?php echo nl2br(
     esc_html(sibel_setting('address')),
-); ?></p><p><strong>Телефон:</strong> <?php echo esc_html(
-    sibel_setting('phone') . '; ' . sibel_setting('phone_second'),
-); ?></p><p><strong>E-mail:</strong> <a href="mailto:<?php echo esc_attr(
+); ?></p><p><strong>Телефон:</strong> <a href="<?php echo esc_url(
+    sibel_phone_href(sibel_setting('phone')),
+); ?>"><?php echo esc_html(sibel_setting('phone')); ?></a>; <a href="<?php echo esc_url(
+    sibel_phone_href(sibel_setting('phone_second')),
+); ?>"><?php echo esc_html(
+    sibel_setting('phone_second'),
+); ?></a></p><p><strong>E-mail:</strong> <a href="mailto:<?php echo esc_attr(
     sibel_setting('email'),
-); ?>"><?php echo esc_html(sibel_setting('email')); ?></a></p></div></section>
+); ?>"><?php echo esc_html(
+    sibel_setting('email'),
+); ?></a></p><a class="map-open-link" href="<?php echo esc_url(
+    sibel_map_url(),
+); ?>" target="_blank" rel="noopener">Открыть в Яндекс Картах ↗</a></div></section>
         <?php endif; ?>
     </div>
 </main>

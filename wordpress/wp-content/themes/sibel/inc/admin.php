@@ -83,6 +83,14 @@ add_action('admin_menu', function () {
         'sibel_admin_settings',
     );
     add_submenu_page('sibel', 'Меню сайта', 'Меню сайта', 'edit_theme_options', 'nav-menus.php');
+    add_submenu_page(
+        'sibel',
+        'Юридические документы',
+        'Юридические документы',
+        'manage_sibel',
+        'sibel-legal',
+        'sibel_admin_legal_page',
+    );
     if (in_array('sibel_manager', wp_get_current_user()->roles, true)) {
         foreach (['index.php', 'edit.php', 'edit-comments.php', 'tools.php'] as $menu) {
             remove_menu_page($menu);
@@ -170,13 +178,15 @@ function sibel_admin_page(): void
         <div class="sibel-admin-columns"><section class="sibel-admin-panel"><div class="sibel-panel-heading"><h2>Новые заявки</h2><a href="<?php echo esc_url(
             admin_url('edit.php?post_type=sibel_lead'),
         ); ?>">Все заявки →</a></div><?php if ($new->have_posts()):
-    foreach ($new->posts as $lead): ?><a class="sibel-lead-row" href="<?php echo esc_url(
+    foreach ($new->posts as $lead): ?><div class="sibel-lead-row"><div><a href="<?php echo esc_url(
     get_edit_post_link($lead->ID),
-); ?>"><div><strong><?php echo esc_html(
+); ?>"><strong><?php echo esc_html(
     get_post_meta($lead->ID, '_sibel_name', true),
-); ?></strong><span><?php echo esc_html(
+); ?></strong></a><span><?php echo sibel_contact_link(
     get_post_meta($lead->ID, '_sibel_phone', true),
-); ?></span></div><span><?php echo esc_html(get_the_date('d.m.Y H:i', $lead)); ?></span></a><?php endforeach;
+); ?></span></div><span><?php echo esc_html(
+    get_the_date('d.m.Y H:i', $lead),
+); ?></span></div><?php endforeach;
 else:
      ?><div class="sibel-empty"><span class="dashicons dashicons-email-alt"></span><p>Новых заявок пока нет</p><span>Сообщения из форм на сайте появятся здесь.</span></div><?php
 endif; ?></section><section class="sibel-admin-panel"><h2>Быстрые действия</h2><div class="sibel-shortcuts"><a href="<?php echo esc_url(
@@ -224,7 +234,7 @@ function sibel_admin_setting_fields(): array
             'phone_second' => ['Дополнительный телефон', 'text'],
             'email' => ['Электронная почта', 'email'],
             'address' => ['Адрес', 'textarea'],
-            'map_link' => ['Ссылка на карту', 'url'],
+            'map_link' => ['Ссылка на карточку в Яндекс Картах (необязательно)', 'url'],
             'notification_email' => ['Почта для уведомлений о заявках', 'email'],
         ],
         'Названия разделов' => [
@@ -301,6 +311,9 @@ function sibel_admin_settings(): void
         <?php if (
             $key === 'notification_email'
         ): ?><p class="description">Заявки всегда сохраняются в панели. Для писем укажите адрес и настройте отправку почты на хостинге.</p><?php endif; ?>
+        <?php if (
+            $key === 'map_link'
+        ): ?><p class="description">Карта автоматически ищет адрес из поля «Адрес». Здесь можно указать ссылку на карточку организации в Яндекс Картах для кнопки открытия.</p><?php endif; ?>
     </div><?php
 endforeach; ?></div></section><?php endforeach; ?>
     <div class="sibel-save-bar"><button type="submit" class="sibel-admin-button">Сохранить изменения</button><span>Изменения будут видны всем посетителям сайта.</span></div></form></div>

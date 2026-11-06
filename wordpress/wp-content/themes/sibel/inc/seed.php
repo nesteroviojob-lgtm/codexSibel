@@ -176,15 +176,13 @@ function sibel_seed(): void
             ['certificates', 'Сертификаты'],
             ['contacts', 'Контакты'],
             ['about', 'О компании'],
-            ['privacy', 'Политика конфиденциальности'],
-            ['terms', 'Пользовательское соглашение'],
         ]
         as [$slug, $title]
     ) {
         if (!get_page_by_path($slug)) {
             wp_insert_post([
                 'post_type' => 'page',
-                'post_status' => in_array($slug, ['privacy', 'terms'], true) ? 'draft' : 'publish',
+                'post_status' => 'publish',
                 'post_name' => $slug,
                 'post_title' => $title,
             ]);

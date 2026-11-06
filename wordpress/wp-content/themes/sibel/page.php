@@ -63,20 +63,20 @@ get_post_meta($p->ID, '_sibel_asset', true) === '4e1fb.png'
     <?php elseif ($slug === 'contacts'): ?>
         <img class="contacts-glow" src="<?php echo esc_url(
             sibel_asset('c9f14.svg'),
-        ); ?>" alt=""><div class="contacts-grid"><a class="contacts-map" href="<?php echo esc_url(
-    sibel_setting('map_link'),
-); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url(
-    sibel_asset('5e80c.png'),
-); ?>" alt="СИБЭЛ на карте Томска, ул. Пролетарская, 62/2"></a><div class="contact-details"><div class="contact-detail"><span class="contact-detail__icon"><?php sibel_icon(
+        ); ?>" alt=""><div class="contacts-grid"><div class="contacts-map"><?php sibel_yandex_map(); ?><a class="map-open-link map-open-link--overlay" href="<?php echo esc_url(
+    sibel_map_url(),
+); ?>" target="_blank" rel="noopener">Открыть в Яндекс Картах ↗</a></div><div class="contact-details"><div class="contact-detail"><span class="contact-detail__icon"><?php sibel_icon(
     'contact-phone',
 ); ?></span><div><span>Адрес</span><p><?php echo nl2br(
     esc_html(sibel_setting('address')),
 ); ?></p></div></div><div class="contact-detail"><span class="contact-detail__icon"><?php sibel_icon(
     'contact-phone',
-); ?></span><div><span>Телефон</span><p><a href="tel:<?php echo esc_attr(
-    preg_replace('/[^+0-9]/', '', sibel_setting('phone')),
+); ?></span><div><span>Телефон</span><p><a href="<?php echo esc_url(
+    sibel_phone_href(sibel_setting('phone')),
+); ?>"><?php echo esc_html(sibel_setting('phone')); ?></a>; <a href="<?php echo esc_url(
+    sibel_phone_href(sibel_setting('phone_second')),
 ); ?>"><?php echo esc_html(
-    sibel_setting('phone') . '; ' . sibel_setting('phone_second'),
+    sibel_setting('phone_second'),
 ); ?></a></p></div></div><div class="contact-detail"><span class="contact-detail__icon"><?php sibel_icon(
     'mail',
 ); ?></span><div><span>Почта</span><p><a href="mailto:<?php echo esc_attr(

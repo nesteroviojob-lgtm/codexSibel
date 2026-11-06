@@ -2,6 +2,8 @@
 defined('ABSPATH') || exit();
 
 require_once __DIR__ . '/inc/content.php';
+require_once __DIR__ . '/inc/contacts.php';
+require_once __DIR__ . '/inc/legal.php';
 require_once __DIR__ . '/inc/seed.php';
 require_once __DIR__ . '/inc/admin.php';
 require_once __DIR__ . '/inc/leads.php';
@@ -153,9 +155,9 @@ function sibel_contact_form(string $id = 'contact'): void
             <label>Номер телефона<input type="tel" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required maxlength="30"></label>
             <button class="button" type="submit">Оставить запрос</button>
         </div>
-        <label class="consent"><input type="checkbox" name="consent" required><span>Согласен на обработку персональных данных в соответствии с <a href="<?php echo esc_url(
-            sibel_page_url('privacy'),
-        ); ?>">Политикой конфиденциальности</a></span></label>
+        <label class="consent"><input type="checkbox" name="consent" value="1" required><span>Даю <a href="<?php echo esc_url(
+            sibel_page_url('consent'),
+        ); ?>" target="_blank" rel="noopener">согласие на обработку персональных данных</a>. <a href="<?php echo esc_url(sibel_page_url('privacy')); ?>" target="_blank" rel="noopener">Политика обработки персональных данных</a></span></label>
         <div class="form-honeypot" aria-hidden="true"><label>Сайт<input name="website" tabindex="-1" autocomplete="off"></label></div>
         <input type="hidden" name="product" value="<?php echo esc_attr(
             is_singular('sibel_product') ? get_the_title() : '',

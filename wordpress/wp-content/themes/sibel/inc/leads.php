@@ -30,7 +30,7 @@ function sibel_submit_lead(): void
         strlen($digits) > 15 ||
         mb_strlen($product) > 300 ||
         ($email_raw && !is_email($email_raw)) ||
-        empty($_POST['consent'])
+        !in_array($_POST['consent'] ?? '', ['1', 'on'], true)
     ) {
         wp_send_json_error(
             ['message' => 'Укажите имя, корректный телефон и согласие на обработку данных.'],
@@ -73,6 +73,13 @@ function sibel_submit_lead(): void
     ) {
         update_post_meta($id, '_sibel_' . $key_name, $value);
     }
+    $consent_page = get_page_by_path('consent', OBJECT, 'page');
+    if ($consent_page) {
+        $consent_text = wp_strip_all_tags($consent_page->post_content);
+        update_post_meta($id, '_sibel_consent_url', get_permalink($consent_page));
+        update_post_meta($id, '_sibel_consent_text', $consent_text);
+        update_post_meta($id, '_sibel_consent_version', hash('sha256', $consent_text));
+    }
     set_transient($key, $rate + 1, HOUR_IN_SECONDS);
     $recipient = sibel_setting('notification_email');
     if ($recipient && is_email($recipient)) {
@@ -108,10 +115,13 @@ function sibel_lead_meta_box(WP_Post $post): void
         as $key => $label
     ) {
         $value = get_post_meta($post->ID, '_sibel_' . $key, true);
+        $display = in_array($key, ['phone', 'email'], true)
+            ? sibel_contact_link($value, $key)
+            : esc_html($value ?: '—');
         echo '<div class="sibel-field"><strong>' .
             esc_html($label) .
             '</strong><p>' .
-            esc_html($value ?: '—') .
+            $display .
             '</p></div>';
     }
     $status = get_post_meta($post->ID, '_sibel_status', true);
@@ -173,7 +183,10 @@ add_action(
                 ] ?? 'Новая',
             );
         } elseif (in_array($column, ['sibel_phone', 'sibel_company', 'sibel_email'], true)) {
-            echo esc_html(get_post_meta($id, '_' . $column, true));
+            $value = get_post_meta($id, '_' . $column, true);
+            echo $column === 'sibel_company'
+                ? esc_html($value)
+                : sibel_contact_link($value, $column === 'sibel_email' ? 'email' : 'phone');
         }
     },
     10,

@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createSibelRuntime } from '../scripts/runtime.mjs';
 
-test('WordPress site and content management', { timeout: 180000 }, async (t) => {
+test('WordPress site and content management', { timeout: 240000 }, async (t) => {
     const stateDir = `.runtime/integration-${process.pid}`;
     const siteUrl = 'http://127.0.0.1:9499';
     const runtime = await createSibelRuntime({ siteUrl, stateDir });
@@ -51,6 +51,103 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                 }
             }
         });
+        await t.test(
+            'contact numbers dial separately and both Yandex widgets use the configured address',
+            async () => {
+                for (const url of ['/', '/contacts/']) {
+                    const html = (await request(url)).text;
+                    assert.match(html, /href="tel:\+73822593193"/);
+                    assert.match(html, /href="tel:\+73822404802"/);
+                    assert.match(html, /href="mailto:sibel\.tomsk@mail\.ru"/);
+                    assert.doesNotMatch(html, /<a[^>]+href="tel:[^"]+"[^>]*>[^<]*;[^<]*<\/a>/);
+                    const iframe = html.match(/<iframe class="yandex-map" src="([^"]+)"/);
+                    assert.ok(iframe, url);
+                    const source = new URL(iframe[1].replace(/&amp;|&#0*38;/g, '&'));
+                    assert.equal(source.origin, 'https://yandex.ru');
+                    assert.equal(source.pathname, '/map-widget/v1/');
+                    assert.equal(source.searchParams.get('mode'), 'search');
+                    assert.match(source.searchParams.get('text'), /Пролетарская, 62\/2/);
+                    assert.match(html, /Открыть в Яндекс Картах/);
+                    assert.doesNotMatch(html, /assets\/images\/(?:ef7dc|5e80c)\.png/);
+                }
+                const settings = await run("echo json_encode(get_option('sibel_settings'));");
+                try {
+                    await run(
+                        "$s=get_option('sibel_settings');$s['address']='Томск, Пролетарская улица, 64';update_option('sibel_settings',$s);echo json_encode([sibel_map_url(),sibel_map_embed_url(),sibel_phone_href('8 (3822) 59-31-93')]);",
+                    ).then((json) => {
+                        const [link, embed, phone] = JSON.parse(json);
+                        assert.equal(new URL(link).searchParams.get('text'), 'Томск, Пролетарская улица, 64');
+                        assert.equal(
+                            new URL(embed).searchParams.get('text'),
+                            'Томск, Пролетарская улица, 64',
+                        );
+                        assert.equal(phone, 'tel:+73822593193');
+                    });
+                } finally {
+                    await run(
+                        `update_option('sibel_settings',json_decode(${JSON.stringify(settings)},true));`,
+                    );
+                }
+            },
+        );
+        await t.test(
+            'two editable legal templates render and every enquiry form links an unchecked consent',
+            async () => {
+                for (const slug of ['privacy', 'consent']) {
+                    const page = await request('/' + slug + '/');
+                    assert.equal(page.httpStatusCode, 200);
+                    assert.match(page.text, /class="prose legal-document"/);
+                    assert.match(page.text, /\[ЗАПОЛНИТЬ:/);
+                    assert.doesNotMatch(page.text, /\{\{EMAIL\}\}|\{\{MAILTO\}\}/);
+                    assert.equal(
+                        await run(
+                            `$p=get_page_by_path('${slug}');echo get_post_meta($p->ID,'_wp_page_template',true);`,
+                        ),
+                        'page-legal.php',
+                    );
+                }
+                const home = (await request('/')).text;
+                const forms = [...home.matchAll(/<form class="lead-form"[^>]*>([\s\S]*?)<\/form>/g)];
+                assert.equal(forms.length, 2);
+                for (const [, form] of forms) {
+                    const checkbox = form.match(/<input type="checkbox"[^>]*name="consent"[^>]*>/)?.[0];
+                    assert.ok(checkbox);
+                    assert.match(checkbox, /\brequired\b/);
+                    assert.doesNotMatch(checkbox, /\schecked(?:\s|=|>)/);
+                    assert.match(form, /href="[^"]*\/consent\/" target="_blank"/);
+                    assert.match(form, /href="[^"]*\/privacy\/" target="_blank"/);
+                }
+                assert.doesNotMatch(home, /href="[^"]*\/terms\/"/);
+                const templates = JSON.parse(
+                    await run('echo json_encode(wp_get_theme()->get_page_templates());'),
+                );
+                assert.equal(templates['page-legal.php'], 'Юридический документ');
+            },
+        );
+        await t.test(
+            'legal migration upgrades empty old drafts while preserving edited pages and settings',
+            async () => {
+                const result = JSON.parse(
+                    await run(`
+                $privacy=get_page_by_path('privacy');$consent=get_page_by_path('consent');
+                $settings=get_option('sibel_settings');
+                wp_update_post(['ID'=>$privacy->ID,'post_content'=>'<p>Текст заказчика</p>']);
+                wp_update_post(['ID'=>$consent->ID,'post_name'=>'terms','post_content'=>'','post_status'=>'draft']);
+                delete_option('sibel_legal_documents_version');
+                sibel_install_legal_documents();
+                $updated=get_page_by_path('consent');
+                echo json_encode(['same_id'=>$updated->ID===$consent->ID,'title'=>$updated->post_title,'content'=>$updated->post_content,'privacy'=>get_post($privacy->ID)->post_content,'settings'=>get_option('sibel_settings')===$settings]);
+                wp_update_post(['ID'=>$privacy->ID,'post_content'=>wp_slash(sibel_legal_template('privacy'))]);
+                sibel_install_legal_documents();
+            `),
+                );
+                assert.equal(result.same_id, true);
+                assert.equal(result.privacy, '<p>Текст заказчика</p>');
+                assert.equal(result.settings, true);
+                assert.match(result.content, /\[ЗАПОЛНИТЬ:/);
+                assert.match(result.title, /Согласие/);
+            },
+        );
         await t.test(
             'site images follow admin selections and fall back to provided photos when cleared',
             async () => {
@@ -108,6 +205,12 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
             });
             assert.equal(dashboard.httpStatusCode, 200);
             assert.ok(dashboard.text.includes('Всё под рукой'));
+            const legal = await request('/wp-admin/admin.php?page=sibel-legal', {
+                headers: { Cookie: cookie },
+            });
+            assert.equal(legal.httpStatusCode, 200);
+            assert.match(legal.text, /Юридические документы/);
+            assert.match(legal.text, /Редактировать документ/);
         });
         await t.test('settings form persists edits and updates the public contact page', async () => {
             const form = await request('/wp-admin/admin.php?page=sibel-settings', {
@@ -178,6 +281,8 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                 assert.equal(invalid.httpStatusCode, 403);
                 const noConsent = await post('/wp-admin/admin-ajax.php', { ...valid, consent: '' });
                 assert.equal(noConsent.httpStatusCode, 422);
+                const falseConsent = await post('/wp-admin/admin-ajax.php', { ...valid, consent: 'false' });
+                assert.equal(falseConsent.httpStatusCode, 422);
                 const badEmail = await post('/wp-admin/admin-ajax.php', { ...valid, email: 'not-an-email' });
                 assert.equal(badEmail.httpStatusCode, 422);
                 const longCompany = await post('/wp-admin/admin-ajax.php', {
@@ -222,6 +327,15 @@ test('WordPress site and content management', { timeout: 180000 }, async (t) => 
                     `wp_set_current_user(1); ob_start(); sibel_lead_meta_box(get_post(${Number(privateId)})); echo ob_get_clean();`,
                 );
                 assert.match(leadEditor, /Компания клиента/);
+                assert.match(leadEditor, /href="tel:\+79991234567"/);
+                assert.match(leadEditor, /href="mailto:client@example\.org"/);
+                const evidence = JSON.parse(
+                    await run(
+                        `echo json_encode([get_post_meta(${Number(privateId)},'_sibel_consent_text',true),get_post_meta(${Number(privateId)},'_sibel_consent_version',true)]);`,
+                    ),
+                );
+                assert.match(evidence[0], /Я, пользователь сайта СИБЭЛ/);
+                assert.match(evidence[1], /^[a-f0-9]{64}$/);
             },
         );
     } finally {
