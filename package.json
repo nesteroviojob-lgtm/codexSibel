@@ -1,0 +1,25 @@
+{
+  "name": "sibel-corporate-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Корпоративный сайт СИБЭЛ — WordPress, точная вёрстка по Figma и управление каталогом",
+  "scripts": {
+    "dev": "node --use-env-proxy scripts/preview.mjs",
+    "assets": "node --use-env-proxy scripts/download-assets.mjs",
+    "check": "node scripts/check.mjs",
+    "package": "python scripts/package.py",
+    "test": "node --use-env-proxy --test tests/*.test.mjs",
+    "format": "prettier --write wordpress scripts tests",
+    "start:local": "node --use-env-proxy scripts/start-local.mjs"
+  },
+  "devDependencies": {
+    "@prettier/plugin-php": "0.26.0",
+    "@wp-playground/cli": "3.1.62",
+    "fflate": "0.8.3",
+    "prettier": "3.9.10"
+  },
+  "engines": {
+    "node": ">=24.18.0",
+    "npm": ">=11.16.0"
+  }
+}
