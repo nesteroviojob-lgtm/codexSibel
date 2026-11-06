@@ -313,7 +313,7 @@ function sibel_admin_settings(): void
         ): ?><p class="description">Заявки всегда сохраняются в панели. Для писем укажите адрес и настройте отправку почты на хостинге.</p><?php endif; ?>
         <?php if (
             $key === 'map_link'
-        ): ?><p class="description">Карта автоматически ищет адрес из поля «Адрес». Здесь можно указать ссылку на карточку организации в Яндекс Картах для кнопки открытия.</p><?php endif; ?>
+        ): ?><p class="description">Обе карты показывают организацию по этой ссылке. Поддерживаются ссылки «Поделиться» из Яндекс Карт и полные ссылки на карточку компании.</p><?php endif; ?>
     </div><?php
 endforeach; ?></div></section><?php endforeach; ?>
     <div class="sibel-save-bar"><button type="submit" class="sibel-admin-button">Сохранить изменения</button><span>Изменения будут видны всем посетителям сайта.</span></div></form></div>

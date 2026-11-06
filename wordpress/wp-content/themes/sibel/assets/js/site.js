@@ -47,7 +47,8 @@
         });
     });
     document.querySelectorAll('[data-lightbox]').forEach((button) =>
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
             const dialog = document.querySelector('#lightbox');
             const img = dialog.querySelector('img');
             img.src = button.dataset.lightbox;
@@ -65,13 +66,116 @@
             }
         }),
     );
-    document.querySelector('.partner-next')?.addEventListener('click', () => {
-        const track = document.querySelector('.partner-track');
-        const end = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-        track.scrollTo({
-            left: end ? 0 : track.scrollLeft + track.firstElementChild.getBoundingClientRect().width + 20,
-            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    document.querySelectorAll('[data-partner-marquee]').forEach((marquee) => {
+        const track = marquee.querySelector('.partner-track');
+        const group = track.querySelector('.partner-group');
+        const originals = Array.from(group.children, (item) => item.cloneNode(true));
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let previousWidth = -1;
+        let buildGeneration = 0;
+        const rebuild = (force = false) => {
+            const width = document.documentElement.clientWidth;
+            if (!force && width === previousWidth) return;
+            previousWidth = width;
+            const generation = ++buildGeneration;
+            marquee.style.setProperty('--partner-viewport-width', `${width}px`);
+            marquee.classList.remove('is-animated');
+            track.querySelector('[data-marquee-copy-group]')?.remove();
+            group.replaceChildren(...originals.map((item) => item.cloneNode(true)));
+            group.querySelectorAll('img').forEach((img) => {
+                img.loading = 'eager';
+            });
+            if (reducedMotion.matches || !originals.length) return;
+            const originalWidth = group.getBoundingClientRect().width;
+            if (!originalWidth) return;
+            const repetitions = Math.max(1, Math.ceil(width / originalWidth));
+            for (let index = 1; index < repetitions; index++) {
+                for (const original of originals) {
+                    const item = original.cloneNode(true);
+                    item.setAttribute('aria-hidden', 'true');
+                    group.append(item);
+                }
+            }
+            const copy = group.cloneNode(true);
+            copy.dataset.marqueeCopyGroup = '1';
+            copy.setAttribute('aria-hidden', 'true');
+            track.append(copy);
+            track.querySelectorAll('img').forEach((img) => {
+                img.loading = 'eager';
+            });
+            track.style.setProperty('--partner-duration', `${group.getBoundingClientRect().width / 40}s`);
+            Promise.allSettled(Array.from(track.querySelectorAll('img'), (img) => img.decode())).then(() => {
+                if (generation === buildGeneration && !reducedMotion.matches) {
+                    marquee.classList.add('is-animated');
+                }
+            });
+        };
+        let pending;
+        window.addEventListener('resize', () => {
+            cancelAnimationFrame(pending);
+            pending = requestAnimationFrame(() => rebuild());
         });
+        reducedMotion.addEventListener('change', () => rebuild(true));
+        rebuild();
+    });
+
+    document.querySelectorAll('[data-phone-input]').forEach((input) => {
+        const synchronize = () => {
+            const raw = input.value;
+            const position = input.selectionStart ?? raw.length;
+            const hasPrefix = raw.startsWith('+7');
+            let digits = (hasPrefix ? raw.slice(2) : raw).replace(/[^0-9]/g, '');
+            let caret = (hasPrefix ? raw.slice(2, Math.max(2, position)) : raw.slice(0, position)).replace(
+                /[^0-9]/g,
+                '',
+            ).length;
+            if (!hasPrefix && digits.length === 11 && /^[78]/.test(digits)) {
+                digits = digits.slice(1);
+                caret = Math.max(0, caret - 1);
+            }
+            input.value = '+7' + digits.slice(0, 10);
+            input.setSelectionRange(
+                Math.min(2 + caret, input.value.length),
+                Math.min(2 + caret, input.value.length),
+            );
+        };
+        input.addEventListener('beforeinput', (event) => {
+            if (event.inputType === 'insertText' && event.data && /[^0-9]/.test(event.data)) {
+                event.preventDefault();
+                return;
+            }
+            const start = input.selectionStart ?? 2;
+            const end = input.selectionEnd ?? start;
+            if (event.inputType.startsWith('delete') && end <= 2) {
+                event.preventDefault();
+                input.setSelectionRange(2, 2);
+            } else if (start < 2) {
+                input.setSelectionRange(2, Math.max(2, end));
+            }
+        });
+        input.addEventListener('input', synchronize);
+        input.addEventListener('focus', () => {
+            if (!input.value.startsWith('+7')) synchronize();
+            if ((input.selectionStart ?? 0) < 2) input.setSelectionRange(2, 2);
+        });
+        input.addEventListener('paste', (event) => {
+            event.preventDefault();
+            const raw = event.clipboardData.getData('text').trim();
+            let digits = raw.replace(/[^0-9]/g, '');
+            if (
+                (raw.startsWith('+7') && digits.startsWith('7')) ||
+                (digits.length === 11 && /^[78]/.test(digits))
+            )
+                digits = digits.slice(1);
+            const current = input.value.slice(2);
+            const start = Math.max(0, (input.selectionStart ?? 2) - 2);
+            const end = Math.max(0, (input.selectionEnd ?? 2) - 2);
+            input.value = '+7' + (current.slice(0, start) + digits + current.slice(end)).slice(0, 10);
+            const caret = Math.min(2 + start + digits.length, input.value.length);
+            input.setSelectionRange(caret, caret);
+        });
+        if (!input.value) input.value = '+7';
+        else synchronize();
     });
     document.querySelectorAll('[data-lead-form]').forEach((form) =>
         form.addEventListener('submit', async (event) => {

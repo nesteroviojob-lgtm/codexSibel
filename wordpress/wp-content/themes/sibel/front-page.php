@@ -94,14 +94,12 @@ if (
         <?php if (sibel_setting('show_partners')): ?>
         <section class="partners" aria-labelledby="partners-title"><h2 id="partners-title"><?php echo esc_html(
             sibel_setting('partners_title'),
-        ); ?></h2><div class="partner-track"><?php foreach (
+        ); ?></h2><div class="partner-marquee" data-partner-marquee><div class="partner-track"><div class="partner-group"><?php foreach (
     sibel_items('sibel_partner')
-    as $p
-): ?><div class="partner-logo"><?php sibel_image(
+    as $index => $p
+): ?><div class="partner-logo" data-partner-index="<?php echo (int) $index; ?>"><?php sibel_image(
     $p->ID,
-); ?></div><?php endforeach; ?></div><button class="partner-next icon-button" aria-label="Следующие партнёры"><?php sibel_icon(
-    'next',
-); ?></button></section>
+); ?></div><?php endforeach; ?></div></div></div></section>
         <?php endif; ?>
         <?php if (sibel_setting('show_certificates')): ?>
         <section class="certificate-feature"><div class="certificate-feature__copy"><div><h2><span>Сертифицированное</span> производство<br>и продукция</h2><p><?php echo esc_html(
@@ -146,7 +144,7 @@ if (
     sibel_items('sibel_project', 3)
     as $i => $p
 ) {
-    sibel_project_card($p, $i === 1);
+    sibel_project_card($p);
 } ?></div></section>
         <?php endif; ?>
         <?php if (sibel_setting('show_map')): ?>

@@ -502,6 +502,26 @@ button {
     position: absolute;
     top: 31px;
     right: 31px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-4px, 4px);
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        visibility 180ms;
+    pointer-events: none;
+}
+.direction-card:focus-visible .direction-arrow {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+@media (hover: hover) {
+    .direction-card:hover .direction-arrow {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
 }
 .direction-decor {
     position: absolute;
@@ -618,27 +638,52 @@ button {
 .partners {
     position: relative;
 }
-.partner-track {
-    display: flex;
-    gap: 20px;
+.partner-marquee {
+    --partner-card-width: 295px;
+    --partner-gap: 20px;
+    width: var(--partner-viewport-width, 100%);
+    margin-left: calc((100% - var(--partner-viewport-width, 100%)) / 2);
     overflow-x: auto;
     scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
 }
-.partner-track::-webkit-scrollbar {
+.partner-marquee.is-animated {
+    overflow: hidden;
+}
+.partner-track {
+    display: flex;
+    width: max-content;
+}
+.partner-group {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--partner-gap);
+    padding-right: var(--partner-gap);
+}
+.partner-marquee::-webkit-scrollbar {
     display: none;
+}
+.partner-marquee.is-animated .partner-track {
+    animation: partner-scroll var(--partner-duration, 40s) linear infinite;
+    will-change: transform;
+}
+@keyframes partner-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 .partner-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 calc((100% - 60px) / 4);
+    flex: 0 0 var(--partner-card-width);
+    width: var(--partner-card-width);
     height: 152px;
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 20px 35px;
-    scroll-snap-align: start;
 }
 .partner-logo img {
     width: auto;
@@ -647,31 +692,25 @@ button {
     max-width: 225px;
     object-fit: contain;
 }
-.partner-logo:nth-child(1) img {
+.partner-logo[data-partner-index='0'] img {
     width: 123px;
     height: 80px;
 }
-.partner-logo:nth-child(2) img {
+.partner-logo[data-partner-index='1'] img {
     width: 137px;
     height: 68px;
 }
-.partner-logo:nth-child(3) img {
+.partner-logo[data-partner-index='2'] img {
     width: 129px;
     height: 56px;
 }
-.partner-logo:nth-child(4) img {
+.partner-logo[data-partner-index='3'] img {
     width: 225px;
     height: 39.596px;
 }
-.partner-logo:nth-child(5) img {
+.partner-logo[data-partner-index='4'] img {
     width: 207px;
     height: 52px;
-}
-.partner-next {
-    position: absolute;
-    top: 128px;
-    right: -28px;
-    border-radius: 50%;
 }
 .certificate-feature {
     display: grid;
@@ -927,6 +966,7 @@ button {
     padding-bottom: 24px;
     background: white;
     border-radius: 20px;
+    transition: box-shadow 200ms ease;
 }
 .project-card__image {
     aspect-ratio: 400 / 321;
@@ -949,6 +989,7 @@ button {
 .project-card h3 {
     font-size: 18px;
     line-height: 1;
+    transition: color 200ms ease;
 }
 .project-card p {
     font-weight: 500;
@@ -964,12 +1005,19 @@ button {
     font-size: 14px;
     font-weight: 500;
 }
-.project-card--highlight {
+.project-card:focus-visible {
     box-shadow: 0 8px 20px #0000000f;
 }
-.project-card--highlight h3,
-.project-card:hover h3 {
+.project-card:focus-visible h3 {
     color: var(--accent);
+}
+@media (hover: hover) {
+    .project-card:hover {
+        box-shadow: 0 8px 20px #0000000f;
+    }
+    .project-card:hover h3 {
+        color: var(--accent);
+    }
 }
 .home-map {
     position: relative;
@@ -2080,12 +2128,6 @@ dialog::backdrop {
         font-size: 160px;
         top: 85px;
     }
-    .partner-logo {
-        flex-basis: calc((100% - 40px) / 3);
-    }
-    .partner-next {
-        right: -16px;
-    }
     .certificate-feature {
         gap: 28px;
     }
@@ -2367,23 +2409,17 @@ dialog::backdrop {
         width: 139px;
     }
     .partner-logo {
-        flex-basis: calc((100% - 16px) / 2);
         padding: 16px;
         height: 120px;
     }
-    .partner-track {
-        gap: 16px;
+    .partner-marquee {
+        --partner-card-width: 240px;
+        --partner-gap: 16px;
     }
     .partner-logo img {
         max-width: 100%;
         max-height: 70px;
         object-fit: contain;
-    }
-    .partner-next {
-        top: 109px;
-        width: 44px;
-        height: 44px;
-        right: -10px;
     }
     .certificate-feature {
         grid-template-columns: 1fr;

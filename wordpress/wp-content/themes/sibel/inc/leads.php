@@ -18,16 +18,18 @@ function sibel_submit_lead(): void
     }
     $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
     $company = sanitize_text_field(wp_unslash($_POST['company'] ?? ''));
-    $phone = sanitize_text_field(wp_unslash($_POST['phone'] ?? ''));
+    $phone_raw = trim(wp_unslash($_POST['phone'] ?? ''));
+    $phone_valid = preg_match('/^(?:\+7|7|8)[0-9 ()-]+$/D', $phone_raw);
+    $phone_digits = preg_replace('/\D/', '', $phone_raw);
+    $phone = '+7' . substr($phone_digits, 1);
     $email_raw = trim(wp_unslash($_POST['email'] ?? ''));
     $product = sanitize_text_field(wp_unslash($_POST['product'] ?? ''));
-    $digits = preg_replace('/\D/', '', $phone);
     if (
         !$name ||
         mb_strlen($name) > 100 ||
         mb_strlen($company) > 150 ||
-        strlen($digits) < 7 ||
-        strlen($digits) > 15 ||
+        !$phone_valid ||
+        strlen($phone_digits) !== 11 ||
         mb_strlen($product) > 300 ||
         ($email_raw && !is_email($email_raw)) ||
         !in_array($_POST['consent'] ?? '', ['1', 'on'], true)

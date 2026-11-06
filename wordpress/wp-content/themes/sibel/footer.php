@@ -34,9 +34,15 @@
         ); ?>">Сертификаты</a></h2><?php foreach (sibel_items('sibel_certificate', 6) as $i => $p):
     if ($i === 2) {
         continue;
-    } ?><a href="<?php echo esc_url(sibel_page_url('certificates')); ?>"><?php echo esc_html(
+    }
+    $certificate_url = sibel_certificate_url($p);
+    if ($certificate_url): ?><a href="<?php echo esc_url(
+    $certificate_url,
+); ?>" data-lightbox="<?php echo esc_url($certificate_url); ?>" data-caption="<?php echo esc_attr(
+    $p->post_title,
+); ?>"><?php echo esc_html(
     $i === 1 ? 'Разрешение на применение' : $p->post_title,
-); ?></a><?php
+); ?></a><?php else: ?><span><?php echo esc_html($p->post_title); ?></span><?php endif;
 endforeach; ?></div>
         <div class="footer-column"><h2><a href="<?php echo esc_url(
             sibel_page_url('projects'),

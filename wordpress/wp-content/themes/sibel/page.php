@@ -41,12 +41,9 @@ if (
     <?php elseif ($slug === 'certificates'): ?>
         <p class="page-intro"><?php echo esc_html(sibel_setting('certificates_intro')); ?></p>
         <div class="certificates-grid"><?php foreach (sibel_items('sibel_certificate') as $p):
-            $url =
-                get_the_post_thumbnail_url($p, 'full') ?:
-                sibel_asset(
-                    get_post_meta($p->ID, '_sibel_asset', true),
-                ); ?><button class="certificate-card<?php echo !has_post_thumbnail($p->ID) &&
-get_post_meta($p->ID, '_sibel_asset', true) === '4e1fb.png'
+            $url = sibel_certificate_url($p); ?><button class="certificate-card<?php echo !has_post_thumbnail(
+    $p->ID,
+) && get_post_meta($p->ID, '_sibel_asset', true) === '4e1fb.png'
     ? ' certificate-card--landscape'
     : ''; ?>" data-lightbox="<?php echo esc_url($url); ?>" data-caption="<?php echo esc_attr(
     $p->post_title,
@@ -58,7 +55,7 @@ get_post_meta($p->ID, '_sibel_asset', true) === '4e1fb.png'
         endforeach; ?></div>
     <?php elseif ($slug === 'projects'): ?>
         <div class="projects-grid"><?php foreach (sibel_items('sibel_project') as $i => $p) {
-            sibel_project_card($p, $i === 1);
+            sibel_project_card($p);
         } ?></div>
     <?php elseif ($slug === 'contacts'): ?>
         <img class="contacts-glow" src="<?php echo esc_url(

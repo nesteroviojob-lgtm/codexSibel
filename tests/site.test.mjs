@@ -52,7 +52,7 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
             }
         });
         await t.test(
-            'contact numbers dial separately and both Yandex widgets use the configured address',
+            'contact numbers dial separately and both maps target the supplied organization card',
             async () => {
                 for (const url of ['/', '/contacts/']) {
                     const html = (await request(url)).text;
@@ -64,9 +64,8 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
                     assert.ok(iframe, url);
                     const source = new URL(iframe[1].replace(/&amp;|&#0*38;/g, '&'));
                     assert.equal(source.origin, 'https://yandex.ru');
-                    assert.equal(source.pathname, '/map-widget/v1/');
-                    assert.equal(source.searchParams.get('mode'), 'search');
-                    assert.match(source.searchParams.get('text'), /Пролетарская, 62\/2/);
+                    assert.equal(source.pathname, '/map-widget/v1/-/CXvjIB38');
+                    assert.match(html, /href="https:\/\/yandex\.ru\/maps\/-\/CXvjIB38"/);
                     assert.match(html, /Открыть в Яндекс Картах/);
                     assert.doesNotMatch(html, /assets\/images\/(?:ef7dc|5e80c)\.png/);
                 }
@@ -76,17 +75,52 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
                         "$s=get_option('sibel_settings');$s['address']='Томск, Пролетарская улица, 64';update_option('sibel_settings',$s);echo json_encode([sibel_map_url(),sibel_map_embed_url(),sibel_phone_href('8 (3822) 59-31-93')]);",
                     ).then((json) => {
                         const [link, embed, phone] = JSON.parse(json);
-                        assert.equal(new URL(link).searchParams.get('text'), 'Томск, Пролетарская улица, 64');
-                        assert.equal(
-                            new URL(embed).searchParams.get('text'),
-                            'Томск, Пролетарская улица, 64',
-                        );
+                        assert.equal(link, 'https://yandex.ru/maps/-/CXvjIB38');
+                        assert.equal(new URL(embed).pathname, '/map-widget/v1/-/CXvjIB38');
                         assert.equal(phone, 'tel:+73822593193');
                     });
+                    const migration = JSON.parse(
+                        await run(`
+                        $s=get_option('sibel_settings');$s['map_link']='https://yandex.ru/maps/?text=old_building_fixture';update_option('sibel_settings',$s);
+                        delete_option('sibel_organization_map_version');sibel_upgrade_organization_map();
+                        echo json_encode(['link'=>sibel_setting('map_link'),'address'=>sibel_setting('address')]);
+                    `),
+                    );
+                    assert.equal(migration.link, 'https://yandex.ru/maps/-/CXvjIB38');
+                    assert.equal(migration.address, 'Томск, Пролетарская улица, 64');
+                    const full = JSON.parse(
+                        await run(
+                            "$s=get_option('sibel_settings');$s['map_link']='https://yandex.ru/maps/org/test_fixture/123456789/';update_option('sibel_settings',$s);sibel_upgrade_organization_map();echo json_encode(sibel_map_embed_url());",
+                        ),
+                    );
+                    assert.equal(new URL(full).searchParams.get('oid'), '123456789');
+                    assert.equal(new URL(full).searchParams.get('ol'), 'biz');
                 } finally {
                     await run(
                         `update_option('sibel_settings',json_decode(${JSON.stringify(settings)},true));`,
                     );
+                }
+            },
+        );
+        await t.test(
+            'home cards have no permanent project selection, partners loop and footer opens specific certificates',
+            async () => {
+                const home = (await request('/')).text;
+                assert.doesNotMatch(home, /project-card--highlight|partner-next/);
+                assert.doesNotMatch((await request('/projects/')).text, /project-card--highlight/);
+                assert.match(home, /data-partner-marquee/);
+                assert.match(home, /class="partner-group"/);
+                assert.match(home, /data-phone-input pattern="\\\+7\[0-9\]\{10\}"/);
+                const footer = home.match(/<footer[\s\S]*?<\/footer>/)[0];
+                const certificates = [
+                    ...footer.matchAll(/<a href="([^"]+)" data-lightbox="([^"]+)" data-caption="([^"]+)"/g),
+                ];
+                assert.equal(certificates.length, 5);
+                assert.equal(new Set(certificates.map((c) => c[1])).size, 5);
+                for (const [, href, source, caption] of certificates) {
+                    assert.equal(href, source);
+                    assert.match(source, /\/assets\/images\/[a-f0-9]+\.png/);
+                    assert.ok(caption);
                 }
             },
         );
@@ -283,6 +317,12 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
                 assert.equal(noConsent.httpStatusCode, 422);
                 const falseConsent = await post('/wp-admin/admin-ajax.php', { ...valid, consent: 'false' });
                 assert.equal(falseConsent.httpStatusCode, 422);
+                for (const phone of ['abc+79991234567', '+7999123', '+799912345678']) {
+                    assert.equal(
+                        (await post('/wp-admin/admin-ajax.php', { ...valid, phone })).httpStatusCode,
+                        422,
+                    );
+                }
                 const badEmail = await post('/wp-admin/admin-ajax.php', { ...valid, email: 'not-an-email' });
                 assert.equal(badEmail.httpStatusCode, 422);
                 const longCompany = await post('/wp-admin/admin-ajax.php', {

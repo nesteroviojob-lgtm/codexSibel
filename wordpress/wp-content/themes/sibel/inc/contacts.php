@@ -48,25 +48,58 @@ function sibel_map_url(): string
             return $configured;
         }
     }
-    return 'https://yandex.ru/maps/?text=' . rawurlencode(sibel_map_address());
+    return sibel_defaults()['map_link'];
 }
+
+function sibel_upgrade_organization_map(): void
+{
+    if (get_option('sibel_organization_map_version') === '1') {
+        return;
+    }
+    $settings = get_option('sibel_settings', null);
+    if (is_array($settings)) {
+        add_option(
+            'sibel_map_before_organization_update',
+            ['value' => $settings['map_link'] ?? null],
+            '',
+            false,
+        );
+        $settings['map_link'] = sibel_defaults()['map_link'];
+        update_option('sibel_settings', $settings);
+    }
+    update_option('sibel_organization_map_version', '1');
+}
+add_action('init', 'sibel_upgrade_organization_map', 35);
 
 function sibel_map_embed_url(): string
 {
-    return 'https://yandex.ru/map-widget/v1/?' .
-        http_build_query(
-            ['mode' => 'search', 'text' => sibel_map_address(), 'z' => '17', 'lang' => 'ru_RU'],
-            '',
-            '&',
-            PHP_QUERY_RFC3986,
-        );
+    $parts = wp_parse_url(sibel_map_url());
+    if (preg_match('#^/maps/-/([a-zA-Z0-9_-]+)/?$#', $parts['path'] ?? '', $match)) {
+        return 'https://yandex.ru/map-widget/v1/-/' . $match[1] . '?lang=ru_RU';
+    }
+    parse_str($parts['query'] ?? '', $query);
+    $organization = null;
+    if (preg_match('#/maps/org/(?:[^/]+/)?([0-9]+)(?:/|$)#', $parts['path'] ?? '', $match)) {
+        $organization = $match[1];
+    } elseif (isset($query['oid']) && is_string($query['oid']) && ctype_digit($query['oid'])) {
+        $organization = $query['oid'];
+    }
+    $params = $organization
+        ? ['mode' => 'search', 'ol' => 'biz', 'oid' => $organization, 'z' => '17', 'lang' => 'ru_RU']
+        : [
+            'mode' => 'search',
+            'text' => is_string($query['text'] ?? null) ? $query['text'] : 'Сибел ' . sibel_map_address(),
+            'z' => '17',
+            'lang' => 'ru_RU',
+        ];
+    return 'https://yandex.ru/map-widget/v1/?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
 }
 
 function sibel_yandex_map(): void
 {
     ?>
     <iframe class="yandex-map" src="<?php echo esc_url(sibel_map_embed_url()); ?>" title="<?php echo esc_attr(
-    'Яндекс Карты: ' . sibel_map_address(),
+    'Яндекс Карты: Сибел — ' . sibel_map_address(),
 ); ?>" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <?php
 }

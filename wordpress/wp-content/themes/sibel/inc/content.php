@@ -31,7 +31,7 @@ function sibel_defaults(): array
         'phone_second' => '40-48-02',
         'email' => 'sibel.tomsk@mail.ru',
         'address' => "634009, Россия, г.Томск,\nул.Пролетарская, 62/2",
-        'map_link' => 'https://yandex.ru/maps/?text=Томск%20Пролетарская%2062%2F2%20Сибэл',
+        'map_link' => 'https://yandex.ru/maps/-/CXvjIB38',
         'notification_email' => '',
         'show_directions' => '1',
         'show_about' => '1',

@@ -25,10 +25,16 @@ add_action('wp_enqueue_scripts', function () {
         [],
         (string) filemtime(__DIR__ . '/assets/css/site.css'),
     );
-    wp_enqueue_script('sibel', $uri . '/assets/js/site.js', [], '1.0.0', [
-        'strategy' => 'defer',
-        'in_footer' => true,
-    ]);
+    wp_enqueue_script(
+        'sibel',
+        $uri . '/assets/js/site.js',
+        [],
+        (string) filemtime(__DIR__ . '/assets/js/site.js'),
+        [
+            'strategy' => 'defer',
+            'in_footer' => true,
+        ],
+    );
     wp_localize_script('sibel', 'sibelConfig', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('sibel_lead'),
@@ -126,12 +132,10 @@ function sibel_breadcrumbs(array $parts): void
     echo '</nav>';
 }
 
-function sibel_project_card(WP_Post $project, bool $highlight = false): void
+function sibel_project_card(WP_Post $project): void
 {
     ?>
-    <a class="project-card<?php echo $highlight
-        ? ' project-card--highlight'
-        : ''; ?>" href="<?php echo esc_url(get_permalink($project)); ?>">
+    <a class="project-card" href="<?php echo esc_url(get_permalink($project)); ?>">
         <div class="project-card__image"><?php sibel_image($project->ID); ?></div>
         <div class="project-card__body">
             <div><h3><?php echo esc_html(
@@ -145,6 +149,13 @@ function sibel_project_card(WP_Post $project, bool $highlight = false): void
     <?php
 }
 
+function sibel_certificate_url(WP_Post $certificate): string
+{
+    $image = get_the_post_thumbnail_url($certificate->ID, 'full');
+    $asset = get_post_meta($certificate->ID, '_sibel_asset', true);
+    return $image ?: ($asset ? sibel_asset($asset) : '');
+}
+
 function sibel_contact_form(string $id = 'contact'): void
 {
     ?>
@@ -152,7 +163,7 @@ function sibel_contact_form(string $id = 'contact'): void
         <div class="lead-form__fields">
             <label>Имя<input name="name" autocomplete="name" placeholder="Ваше имя" required maxlength="100"></label>
             <label>Название компании<input name="company" autocomplete="organization" placeholder="Ваша компания" maxlength="150"></label>
-            <label>Номер телефона<input type="tel" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required maxlength="30"></label>
+            <label>Номер телефона<input type="tel" name="phone" inputmode="numeric" autocomplete="tel" value="+7" data-phone-input pattern="\+7[0-9]{10}" title="Введите 10 цифр после +7" required minlength="12" maxlength="12"></label>
             <button class="button" type="submit">Оставить запрос</button>
         </div>
         <label class="consent"><input type="checkbox" name="consent" value="1" required><span>Даю <a href="<?php echo esc_url(
