@@ -1,10 +1,23 @@
 (() => {
     'use strict';
+    const header = document.querySelector('.site-header');
+    if (header) {
+        const adminBar = document.getElementById('wpadminbar');
+        const updateHeader = () => {
+            header.classList.toggle('is-scrolled', window.scrollY > 24);
+            if (adminBar) header.style.top = `${Math.max(0, adminBar.getBoundingClientRect().bottom)}px`;
+        };
+        updateHeader();
+        window.addEventListener('scroll', updateHeader, { passive: true });
+        window.addEventListener('pageshow', updateHeader);
+        if (adminBar) window.addEventListener('resize', updateHeader);
+    }
     const menu = document.querySelector('#main-nav');
     const menuToggle = document.querySelector('.menu-toggle');
     const closeMenu = () => {
         menu?.classList.remove('is-open');
         menuToggle?.setAttribute('aria-expanded', 'false');
+        menuToggle?.setAttribute('aria-label', 'Открыть меню');
     };
     menuToggle?.addEventListener('click', () => {
         const open = menuToggle.getAttribute('aria-expanded') !== 'true';
@@ -14,9 +27,15 @@
     });
     menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') closeMenu();
+        if (event.key === 'Escape' && menuToggle?.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+            menuToggle.focus();
+        }
     });
-    window.matchMedia('(min-width: 1024px)').addEventListener('change', closeMenu);
+    document.addEventListener('click', (event) => {
+        if (!header?.contains(event.target)) closeMenu();
+    });
+    window.matchMedia('(min-width: 1200px)').addEventListener('change', closeMenu);
 
     const openDialog = (id) => {
         const dialog = document.getElementById(id);
