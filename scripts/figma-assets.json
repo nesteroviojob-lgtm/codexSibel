@@ -1,0 +1,913 @@
+{
+  "fileKey": "DubMbk9WH0YVMNaDYHwky0",
+  "assets": [
+    {
+      "filename": "67b8e.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/67b8e.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector"
+        }
+      ]
+    },
+    {
+      "filename": "9dd11.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/9dd11.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgIconoirSearch"
+        }
+      ]
+    },
+    {
+      "filename": "7845a.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/7845a.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector1"
+        },
+        {
+          "screen": "catalog",
+          "variable": "imgVector"
+        },
+        {
+          "screen": "product",
+          "variable": "imgVector"
+        },
+        {
+          "screen": "project",
+          "variable": "imgVector"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgVector"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgVector"
+        },
+        {
+          "screen": "contacts",
+          "variable": "imgVector"
+        }
+      ]
+    },
+    {
+      "filename": "c55c0.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/c55c0.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgIconoirPhone"
+        },
+        {
+          "screen": "catalog",
+          "variable": "imgIconoirPhone"
+        },
+        {
+          "screen": "product",
+          "variable": "imgIconoirPhone"
+        },
+        {
+          "screen": "project",
+          "variable": "imgIconoirPhone"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgIconoirPhone"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgIconoirPhone"
+        },
+        {
+          "screen": "contacts",
+          "variable": "imgIconoirPhone"
+        }
+      ]
+    },
+    {
+      "filename": "d0c87.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/d0c87.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgGroup"
+        },
+        {
+          "screen": "catalog",
+          "variable": "imgGroup"
+        },
+        {
+          "screen": "product",
+          "variable": "imgGroup"
+        },
+        {
+          "screen": "project",
+          "variable": "imgGroup"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgGroup"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgGroup"
+        },
+        {
+          "screen": "contacts",
+          "variable": "imgGroup"
+        }
+      ]
+    },
+    {
+      "filename": "d9626.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/d9626.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgCreateA3D2K2026020214531"
+        }
+      ]
+    },
+    {
+      "filename": "40e79.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/40e79.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage2026020317161"
+        },
+        {
+          "screen": "catalog",
+          "variable": "imgImage2026020317161"
+        },
+        {
+          "screen": "product",
+          "variable": "imgImage2026020317161"
+        }
+      ]
+    },
+    {
+      "filename": "7518b.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/7518b.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgHighlyRealistic3D2K2026020317291"
+        }
+      ]
+    },
+    {
+      "filename": "d177c.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/d177c.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgHighlyRealistic3D2K2026020317451"
+        },
+        {
+          "screen": "catalog",
+          "variable": "imgHighlyRealistic3D2K2026020317451"
+        }
+      ]
+    },
+    {
+      "filename": "5c50a.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/5c50a.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "img201812261837282"
+        }
+      ]
+    },
+    {
+      "filename": "b4b38.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/b4b38.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage10"
+        }
+      ]
+    },
+    {
+      "filename": "70f22.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/70f22.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage8"
+        }
+      ]
+    },
+    {
+      "filename": "ec492.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/ec492.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage14"
+        }
+      ]
+    },
+    {
+      "filename": "1b6dc.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/1b6dc.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage15"
+        }
+      ]
+    },
+    {
+      "filename": "1da5f.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/1da5f.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgSuenkoPhotoroom1"
+        }
+      ]
+    },
+    {
+      "filename": "5ad52.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/5ad52.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage13"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgImage27"
+        }
+      ]
+    },
+    {
+      "filename": "29611.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/29611.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage11"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgImage23"
+        }
+      ]
+    },
+    {
+      "filename": "ab02a.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/ab02a.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage12"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgImage26"
+        }
+      ]
+    },
+    {
+      "filename": "26061.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/26061.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage26"
+        }
+      ]
+    },
+    {
+      "filename": "1d877.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/1d877.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage19"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgImage19"
+        }
+      ]
+    },
+    {
+      "filename": "01c0a.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/01c0a.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage16"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgImage16"
+        }
+      ]
+    },
+    {
+      "filename": "78f90.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/78f90.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgImage17"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgImage17"
+        }
+      ]
+    },
+    {
+      "filename": "ef7dc.png",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/ef7dc.png",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "img200120261436431"
+        }
+      ]
+    },
+    {
+      "filename": "630d0.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/630d0.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgEllipse1"
+        }
+      ]
+    },
+    {
+      "filename": "d22b2.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/d22b2.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector3"
+        }
+      ]
+    },
+    {
+      "filename": "80361.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/80361.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector4"
+        }
+      ]
+    },
+    {
+      "filename": "b81b6.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/b81b6.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgEllipse3"
+        }
+      ]
+    },
+    {
+      "filename": "61781.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/61781.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector5"
+        }
+      ]
+    },
+    {
+      "filename": "6c4b7.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/6c4b7.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgIconoirArrowUpRight"
+        }
+      ]
+    },
+    {
+      "filename": "a50ef.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/a50ef.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector6"
+        }
+      ]
+    },
+    {
+      "filename": "28419.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/28419.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector7"
+        }
+      ]
+    },
+    {
+      "filename": "4adbe.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/4adbe.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgRzdLogo1"
+        }
+      ]
+    },
+    {
+      "filename": "98917.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/98917.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgIconoirNavArrowRight"
+        }
+      ]
+    },
+    {
+      "filename": "81865.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/81865.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgIconoirNavArrowRight1"
+        }
+      ]
+    },
+    {
+      "filename": "cd902.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/cd902.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgEllipse2"
+        }
+      ]
+    },
+    {
+      "filename": "d0533.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/d0533.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector8"
+        }
+      ]
+    },
+    {
+      "filename": "b6f16.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/b6f16.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector9"
+        }
+      ]
+    },
+    {
+      "filename": "2016a.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/2016a.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgVector10"
+        }
+      ]
+    },
+    {
+      "filename": "3f743.svg",
+      "url": "https://www.figma.com/api/mcp/asset/25ddcfc4-9e2c-4360-99dc-db7c5bf035ae/3f743.svg",
+      "sources": [
+        {
+          "screen": "home",
+          "variable": "imgEllipse7"
+        }
+      ]
+    },
+    {
+      "filename": "53163.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/53163.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgHighlyRealistic3D2K2026020317291"
+        }
+      ]
+    },
+    {
+      "filename": "ca6ec.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/ca6ec.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgHighlyRealistic3D2K20260204170311"
+        }
+      ]
+    },
+    {
+      "filename": "82a8d.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/82a8d.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgHighlyRealistic3D2K2026020417131"
+        }
+      ]
+    },
+    {
+      "filename": "9a7bb.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/9a7bb.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgHighlyRealistic3D2K2026020914441"
+        }
+      ]
+    },
+    {
+      "filename": "f6e9f.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/f6e9f.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgHighlyRealistic3D2K2026020914521"
+        }
+      ]
+    },
+    {
+      "filename": "f99cb.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/f99cb.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgE9Da2Bb74Dc2496F925F310544B0A0F91"
+        }
+      ]
+    },
+    {
+      "filename": "75a84.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/75a84.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgE10Fced617F24200B0C65Dda9Dbce1961"
+        }
+      ]
+    },
+    {
+      "filename": "8f74a.png",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/8f74a.png",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "img5D35D9B22B7C4A669E75A78D70386Fab1"
+        }
+      ]
+    },
+    {
+      "filename": "2e56a.svg",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/2e56a.svg",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgVector1"
+        },
+        {
+          "screen": "product",
+          "variable": "imgVector1"
+        },
+        {
+          "screen": "project",
+          "variable": "imgVector1"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgVector1"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgVector1"
+        },
+        {
+          "screen": "contacts",
+          "variable": "imgVector1"
+        }
+      ]
+    },
+    {
+      "filename": "5641e.svg",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/5641e.svg",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgIconoirSearch"
+        },
+        {
+          "screen": "product",
+          "variable": "imgIconoirSearch"
+        },
+        {
+          "screen": "project",
+          "variable": "imgIconoirSearch"
+        },
+        {
+          "screen": "projects",
+          "variable": "imgIconoirSearch"
+        },
+        {
+          "screen": "certificates",
+          "variable": "imgIconoirSearch"
+        },
+        {
+          "screen": "contacts",
+          "variable": "imgIconoirSearch"
+        }
+      ]
+    },
+    {
+      "filename": "85891.svg",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/85891.svg",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgIconoirArrowUpRight"
+        }
+      ]
+    },
+    {
+      "filename": "b36df.svg",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/b36df.svg",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgEllipse4"
+        }
+      ]
+    },
+    {
+      "filename": "0bc15.svg",
+      "url": "https://www.figma.com/api/mcp/asset/466143a1-f394-4848-a443-04c6527f9233/0bc15.svg",
+      "sources": [
+        {
+          "screen": "catalog",
+          "variable": "imgEllipse5"
+        }
+      ]
+    },
+    {
+      "filename": "d4cac.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/d4cac.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage210"
+        }
+      ]
+    },
+    {
+      "filename": "4d9c2.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/4d9c2.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage20"
+        }
+      ]
+    },
+    {
+      "filename": "1dcb5.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/1dcb5.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage21"
+        }
+      ]
+    },
+    {
+      "filename": "0d621.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/0d621.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage22"
+        }
+      ]
+    },
+    {
+      "filename": "981a5.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/981a5.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage23"
+        }
+      ]
+    },
+    {
+      "filename": "096c7.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/096c7.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage24"
+        }
+      ]
+    },
+    {
+      "filename": "cad45.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/cad45.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage25"
+        }
+      ]
+    },
+    {
+      "filename": "da5a3.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/da5a3.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage26"
+        }
+      ]
+    },
+    {
+      "filename": "47daa.png",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/47daa.png",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgImage27"
+        }
+      ]
+    },
+    {
+      "filename": "640dd.svg",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/640dd.svg",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgIconoirFlashSolid"
+        }
+      ]
+    },
+    {
+      "filename": "427fe.svg",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/427fe.svg",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgLine1"
+        }
+      ]
+    },
+    {
+      "filename": "76668.svg",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/76668.svg",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgVector4"
+        }
+      ]
+    },
+    {
+      "filename": "26aca.svg",
+      "url": "https://www.figma.com/api/mcp/asset/c7f69569-8f42-46d3-b098-d703f5851b72/26aca.svg",
+      "sources": [
+        {
+          "screen": "product",
+          "variable": "imgIconoirDownload"
+        }
+      ]
+    },
+    {
+      "filename": "3924f.png",
+      "url": "https://www.figma.com/api/mcp/asset/a3353ee9-4df7-4a0c-ab98-b086ceeca81c/3924f.png",
+      "sources": [
+        {
+          "screen": "project",
+          "variable": "imgImage19"
+        }
+      ]
+    },
+    {
+      "filename": "eab20.png",
+      "url": "https://www.figma.com/api/mcp/asset/a3353ee9-4df7-4a0c-ab98-b086ceeca81c/eab20.png",
+      "sources": [
+        {
+          "screen": "project",
+          "variable": "imgImage27"
+        }
+      ]
+    },
+    {
+      "filename": "f297b.png",
+      "url": "https://www.figma.com/api/mcp/asset/3192b973-28cf-42aa-9e46-b7c09b9f84fb/f297b.png",
+      "sources": [
+        {
+          "screen": "projects",
+          "variable": "imgImage20"
+        }
+      ]
+    },
+    {
+      "filename": "553fc.png",
+      "url": "https://www.figma.com/api/mcp/asset/835bf738-a37d-4e38-b0fb-61c9daa93b4d/553fc.png",
+      "sources": [
+        {
+          "screen": "certificates",
+          "variable": "imgImage24"
+        }
+      ]
+    },
+    {
+      "filename": "36bc5.png",
+      "url": "https://www.figma.com/api/mcp/asset/835bf738-a37d-4e38-b0fb-61c9daa93b4d/36bc5.png",
+      "sources": [
+        {
+          "screen": "certificates",
+          "variable": "imgImage25"
+        }
+      ]
+    },
+    {
+      "filename": "c6391.png",
+      "url": "https://www.figma.com/api/mcp/asset/835bf738-a37d-4e38-b0fb-61c9daa93b4d/c6391.png",
+      "sources": [
+        {
+          "screen": "certificates",
+          "variable": "imgImage28"
+        }
+      ]
+    },
+    {
+      "filename": "8fcbc.png",
+      "url": "https://www.figma.com/api/mcp/asset/835bf738-a37d-4e38-b0fb-61c9daa93b4d/8fcbc.png",
+      "sources": [
+        {
+          "screen": "certificates",
+          "variable": "imgImage29"
+        }
+      ]
+    },
+    {
+      "filename": "4e1fb.png",
+      "url": "https://www.figma.com/api/mcp/asset/835bf738-a37d-4e38-b0fb-61c9daa93b4d/4e1fb.png",
+      "sources": [
+        {
+          "screen": "certificates",
+          "variable": "imgImage30"
+        }
+      ]
+    },
+    {
+      "filename": "5e80c.png",
+      "url": "https://www.figma.com/api/mcp/asset/0887d71a-8f48-4454-ac99-6d964dd3a8ca/5e80c.png",
+      "sources": [
+        {
+          "screen": "contacts",
+          "variable": "img200120261436431"
+        }
+      ]
+    },
+    {
+      "filename": "c9f14.svg",
+      "url": "https://www.figma.com/api/mcp/asset/0887d71a-8f48-4454-ac99-6d964dd3a8ca/c9f14.svg",
+      "sources": [
+        {
+          "screen": "contacts",
+          "variable": "imgEllipse1"
+        }
+      ]
+    },
+    {
+      "filename": "d913e.svg",
+      "url": "https://www.figma.com/api/mcp/asset/0887d71a-8f48-4454-ac99-6d964dd3a8ca/d913e.svg",
+      "sources": [
+        {
+          "screen": "contacts",
+          "variable": "imgIconoirPhone1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+node_modules/
+.playground/
+.runtime/
+dist/
+artifacts/
+.env
+.DS_Store
+*.log
+__pycache__/
+*.pyc
+SIBEL-FIGMA*.zip
+wordpress/wp-content/themes/sibel/assets/images/*.part
