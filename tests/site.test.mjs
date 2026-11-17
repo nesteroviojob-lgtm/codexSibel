@@ -52,7 +52,7 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
             }
         });
         await t.test(
-            'contact numbers dial separately and both maps target the supplied organization card',
+            'contact numbers dial separately and both maps use the supplied pin view',
             async () => {
                 for (const url of ['/', '/contacts/']) {
                     const html = (await request(url)).text;
@@ -63,9 +63,11 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
                     const iframe = html.match(/<iframe class="yandex-map" src="([^"]+)"/);
                     assert.ok(iframe, url);
                     const source = new URL(iframe[1].replace(/&amp;|&#0*38;/g, '&'));
-                    assert.equal(source.origin, 'https://yandex.ru');
-                    assert.equal(source.pathname, '/map-widget/v1/-/CXvjIB38');
-                    assert.match(html, /href="https:\/\/yandex\.ru\/maps\/-\/CXvjIB38"/);
+                    assert.equal(source.origin, 'https://yandex.com');
+                    assert.equal(source.pathname, '/map-widget/v1/-/CXSGUM31');
+                    assert.equal(source.searchParams.get('mode'), 'poi');
+                    assert.equal(source.searchParams.get('lang'), 'ru_RU');
+                    assert.match(html, /href="https:\/\/yandex\.com\/maps\/-\/CXSGUM31"/);
                     assert.match(html, /Открыть в Яндекс Картах/);
                     assert.doesNotMatch(html, /assets\/images\/(?:ef7dc|5e80c)\.png/);
                 }
@@ -75,19 +77,21 @@ test('WordPress site and content management', { timeout: 240000 }, async (t) => 
                         "$s=get_option('sibel_settings');$s['address']='Томск, Пролетарская улица, 64';update_option('sibel_settings',$s);echo json_encode([sibel_map_url(),sibel_map_embed_url(),sibel_phone_href('8 (3822) 59-31-93')]);",
                     ).then((json) => {
                         const [link, embed, phone] = JSON.parse(json);
-                        assert.equal(link, 'https://yandex.ru/maps/-/CXvjIB38');
-                        assert.equal(new URL(embed).pathname, '/map-widget/v1/-/CXvjIB38');
+                        assert.equal(link, 'https://yandex.com/maps/-/CXSGUM31');
+                        assert.equal(new URL(embed).pathname, '/map-widget/v1/-/CXSGUM31');
                         assert.equal(phone, 'tel:+73822593193');
                     });
                     const migration = JSON.parse(
                         await run(`
-                        $s=get_option('sibel_settings');$s['map_link']='https://yandex.ru/maps/?text=old_building_fixture';update_option('sibel_settings',$s);
-                        delete_option('sibel_organization_map_version');sibel_upgrade_organization_map();
-                        echo json_encode(['link'=>sibel_setting('map_link'),'address'=>sibel_setting('address')]);
+                        $s=get_option('sibel_settings');$s['map_link']='https://yandex.ru/maps/-/CXvjIB38';update_option('sibel_settings',$s);
+                        update_option('sibel_organization_map_version','1');delete_option('sibel_map_before_pin_update');sibel_upgrade_organization_map();
+                        echo json_encode(['link'=>sibel_setting('map_link'),'address'=>sibel_setting('address'),'backup'=>get_option('sibel_map_before_pin_update'),'version'=>get_option('sibel_organization_map_version')]);
                     `),
                     );
-                    assert.equal(migration.link, 'https://yandex.ru/maps/-/CXvjIB38');
+                    assert.equal(migration.link, 'https://yandex.com/maps/-/CXSGUM31');
                     assert.equal(migration.address, 'Томск, Пролетарская улица, 64');
+                    assert.equal(migration.backup.value, 'https://yandex.ru/maps/-/CXvjIB38');
+                    assert.equal(migration.version, '2');
                     const full = JSON.parse(
                         await run(
                             "$s=get_option('sibel_settings');$s['map_link']='https://yandex.ru/maps/org/test_fixture/123456789/';update_option('sibel_settings',$s);sibel_upgrade_organization_map();echo json_encode(sibel_map_embed_url());",

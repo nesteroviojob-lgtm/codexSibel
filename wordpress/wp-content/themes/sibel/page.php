@@ -20,12 +20,10 @@ $slug = get_post_field('post_name', get_the_ID());
         ?>
         <div class="catalog-grid"><?php foreach (
             sibel_items('sibel_product')
-            as $i => $p
+            as $p
         ): ?><a data-product="<?php echo has_post_thumbnail($p->ID)
     ? 'custom'
-    : esc_attr($p->post_name); ?>" class="catalog-card<?php echo $i === 1
-    ? ' catalog-card--highlight'
-    : ''; ?>" href="<?php echo esc_url(get_permalink($p)); ?>"><div class="catalog-card__image"><?php
+    : esc_attr($p->post_name); ?>" class="catalog-card" href="<?php echo esc_url(get_permalink($p)); ?>"><div class="catalog-card__image"><?php
 sibel_image($p->ID);
 if (
     $p->post_name === 'kso' &&

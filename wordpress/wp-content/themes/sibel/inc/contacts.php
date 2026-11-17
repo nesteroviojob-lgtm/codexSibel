@@ -42,7 +42,11 @@ function sibel_map_url(): string
         $parts = wp_parse_url($configured);
         if (
             ($parts['scheme'] ?? '') === 'https' &&
-            in_array($parts['host'] ?? '', ['yandex.ru', 'www.yandex.ru'], true) &&
+            in_array(
+                $parts['host'] ?? '',
+                ['yandex.ru', 'www.yandex.ru', 'yandex.com', 'www.yandex.com'],
+                true,
+            ) &&
             str_starts_with($parts['path'] ?? '', '/maps')
         ) {
             return $configured;
@@ -53,13 +57,13 @@ function sibel_map_url(): string
 
 function sibel_upgrade_organization_map(): void
 {
-    if (get_option('sibel_organization_map_version') === '1') {
+    if (get_option('sibel_organization_map_version') === '2') {
         return;
     }
     $settings = get_option('sibel_settings', null);
     if (is_array($settings)) {
         add_option(
-            'sibel_map_before_organization_update',
+            'sibel_map_before_pin_update',
             ['value' => $settings['map_link'] ?? null],
             '',
             false,
@@ -67,15 +71,18 @@ function sibel_upgrade_organization_map(): void
         $settings['map_link'] = sibel_defaults()['map_link'];
         update_option('sibel_settings', $settings);
     }
-    update_option('sibel_organization_map_version', '1');
+    update_option('sibel_organization_map_version', '2');
 }
 add_action('init', 'sibel_upgrade_organization_map', 35);
 
 function sibel_map_embed_url(): string
 {
     $parts = wp_parse_url(sibel_map_url());
+    $origin = in_array($parts['host'] ?? '', ['yandex.com', 'www.yandex.com'], true)
+        ? 'https://yandex.com'
+        : 'https://yandex.ru';
     if (preg_match('#^/maps/-/([a-zA-Z0-9_-]+)/?$#', $parts['path'] ?? '', $match)) {
-        return 'https://yandex.ru/map-widget/v1/-/' . $match[1] . '?lang=ru_RU';
+        return $origin . '/map-widget/v1/-/' . $match[1] . '?lang=ru_RU&mode=poi';
     }
     parse_str($parts['query'] ?? '', $query);
     $organization = null;
@@ -92,7 +99,7 @@ function sibel_map_embed_url(): string
             'z' => '17',
             'lang' => 'ru_RU',
         ];
-    return 'https://yandex.ru/map-widget/v1/?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+    return $origin . '/map-widget/v1/?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
 }
 
 function sibel_yandex_map(): void

@@ -43,7 +43,11 @@ $products = sibel_items('sibel_product');
     get_post_meta($p->ID, '_sibel_short', true),
 ); ?></h3><p><?php echo esc_html(
     preg_replace('/\s*\([^)]*\)$/u', '', $p->post_title),
-); ?></p><?php sibel_image($p->ID, '', 'direction-product'); ?></a><?php
+); ?></p><span class="direction-arrow"><?php sibel_icon('up-right'); ?></span><?php sibel_image(
+    $p->ID,
+    '',
+    'direction-product',
+); ?></a><?php
                 endif; ?></div>
                 <?php foreach (
                     array_slice($products, 1, 2)
@@ -56,9 +60,10 @@ $products = sibel_items('sibel_product');
     sibel_asset('a50ef.svg'),
 ); ?>" alt=""><?php endif; ?><h3><?php echo esc_html(
     get_post_meta($p->ID, '_sibel_short', true),
-); ?></h3><p><?php echo esc_html(preg_replace('/\s*\([^)]*\)$/u', '', $p->post_title)); ?></p><?php if (
-    $i === 0
-): ?><span class="direction-arrow"><?php sibel_icon('up-right-white'); ?></span><?php if (
+); ?></h3><p><?php echo esc_html(preg_replace('/\s*\([^)]*\)$/u', '', $p->post_title)); ?></p><span class="direction-arrow"><?php sibel_icon(
+    $i === 0 ? 'up-right-white' : 'up-right',
+); ?></span><?php if (
+    $i === 0 &&
     $p->post_name === 'shcho70' &&
     !has_post_thumbnail($p->ID)
 ): ?><img class="direction-product" src="<?php echo esc_url(
@@ -67,7 +72,7 @@ $products = sibel_items('sibel_product');
         $p->ID,
         '',
         'direction-product',
-    );endif;else:sibel_image($p->ID, '', 'direction-product');endif; ?></a><?php endforeach; ?>
+    );endif; ?></a><?php endforeach; ?>
             </div>
         </section>
         <?php endif; ?>

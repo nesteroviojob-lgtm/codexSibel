@@ -568,6 +568,7 @@ button {
     position: absolute;
     top: 31px;
     right: 31px;
+    z-index: 2;
     opacity: 0;
     visibility: hidden;
     transform: translate(-4px, 4px);
@@ -1286,14 +1287,24 @@ button {
     top: 20px;
     right: 20px;
     opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, visibility 180ms;
 }
-.catalog-card--highlight h2,
-.catalog-card:hover h2 {
+.catalog-card:focus-visible h2 {
     color: var(--accent);
 }
-.catalog-card--highlight .catalog-card__arrow,
-.catalog-card:hover .catalog-card__arrow {
+.catalog-card:focus-visible .catalog-card__arrow {
     opacity: 1;
+    visibility: visible;
+}
+@media (hover: hover) {
+    .catalog-card:hover h2 {
+        color: var(--accent);
+    }
+    .catalog-card:hover .catalog-card__arrow {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 .category-filter {
     display: flex;
