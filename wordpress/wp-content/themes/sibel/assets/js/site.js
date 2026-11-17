@@ -1,5 +1,55 @@
 (() => {
     'use strict';
+    const home = document.querySelector('#main > .hero')?.parentElement;
+    if (home && 'IntersectionObserver' in window) {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (!reducedMotion.matches) {
+            const targets = Array.from(
+                home.querySelectorAll('.hero__copy, .hero__art, .home-sections > section'),
+            );
+            let stopped = false;
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    if (stopped) return;
+                    for (const entry of entries) {
+                        if (!entry.isIntersecting) continue;
+                        observer.unobserve(entry.target);
+                        if (!reducedMotion.matches && !entry.target.matches(':focus-within')) {
+                            entry.target.classList.add('home-reveal');
+                        }
+                    }
+                },
+                { rootMargin: '0px 0px 32px 0px', threshold: 0 },
+            );
+            const stopReveals = () => {
+                stopped = true;
+                observer.disconnect();
+                targets.forEach((target) => target.classList.remove('home-reveal'));
+            };
+            // Keep content visible until an animation actually starts; no hidden waiting state.
+            targets.forEach((target) => {
+                if (target.getBoundingClientRect().bottom > 0) observer.observe(target);
+            });
+            home.addEventListener('animationend', (event) => {
+                if (event.animationName === 'home-block-reveal') {
+                    event.target.classList.remove('home-reveal');
+                }
+            });
+            home.addEventListener('focusin', (event) => {
+                for (const target of targets) {
+                    if (!target.contains(event.target)) continue;
+                    observer.unobserve(target);
+                    target.classList.remove('home-reveal');
+                }
+            });
+            reducedMotion.addEventListener('change', () => {
+                if (reducedMotion.matches) stopReveals();
+            });
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) stopReveals();
+            });
+        }
+    }
     const header = document.querySelector('.site-header');
     if (header) {
         const adminBar = document.getElementById('wpadminbar');
